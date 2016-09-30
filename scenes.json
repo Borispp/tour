@@ -1,0 +1,101 @@
+{
+  "scenes": [
+    {
+      "scene": {
+        "view": {
+          "_fisheye":"0.5",
+          "_stereographic":"1.0",
+          "_pannini":"1.0",
+          "_hlookat":"63.101",
+          "_vlookat":"-0.348",
+          "_fovtype":"MFOV",
+          "_fov":"105.000",
+          "_maxpixelzoom":"2.0",
+          "_fovmin":"70",
+          "_fovmax":"105",
+          "_limitview":"auto"
+        },
+
+        "preview": {
+          "_url":"panos/02.tiles/preview.jpg"
+        },
+
+        "image": {
+          "cube": {
+            "_url": "panos/02.tiles/pano_%s.jpg"
+          },
+          "mobile": {
+            "cube": {
+              "_url":"panos/02.tiles/mobile_%s.jpg"
+            }
+          }
+        },
+
+        "_name": "scene_02",
+        "_title":"Entrance 02",
+        "_onstart":"drawHotspots()",
+        "_thumburl":"panos/02.tiles/thumb.jpg",
+        "_lat":"",
+        "_lng":"",
+        "_heading":""
+      }
+    },
+    {
+      "scene": {
+        "view": {
+          "_fisheye":"0.5",
+          "_stereographic":"1.0",
+          "_pannini":"1.0",
+          "_hlookat":"63.101",
+          "_vlookat":"-0.348",
+          "_fovtype":"MFOV",
+          "_fov":"105.000",
+          "_maxpixelzoom":"2.0",
+          "_fovmin":"70",
+          "_fovmax":"105",
+          "_limitview":"auto"
+        },
+
+        "preview": {
+          "_url":"panos/04.tiles/preview.jpg"
+        },
+
+        "image": {
+          "cube": {
+            "_url": "panos/04.tiles/pano_%s.jpg"
+          },
+          "mobile": {
+            "cube": {
+              "_url":"panos/04.tiles/mobile_%s.jpg"
+            }
+          }
+        },
+
+        "_name": "scene_04",
+        "_title": "Entrance 04",
+        "_onstart": "drawHotspots()",
+        "_thumburl": "panos/04.tiles/thumb.jpg",
+        "_lat": "",
+        "_lng": "",
+        "_heading": ""
+      }
+    }
+  ],
+
+  "hotspots": {
+    "scene_02": [
+      {"_name":"spot1", "_style":"skin_hotspotstyle", "_ath":"55.992","_atv":"39.861","_linkedscene":"scene_04","_url":"http://fw/tour/panos/04.tiles/thumb.jpg"},
+      {"_name":"spot3","_style":"skin_hotspotstyle","_ath":"8.328","_atv":"4.623","_linkedscene":"scene_06","_url":"http://fw/tour/panos/06.tiles/thumb.jpg"}
+    ],
+
+    "scene_04": [
+      {"_name":"spot1", "_style":"skin_hotspotstyle", "_ath":"100","_atv":"100","_linkedscene":"scene_04","_url":"http://fw/tour/panos/04.tiles/thumb.jpg"},
+      {"_name":"spot3","_style":"skin_hotspotstyle","_ath":"45","_atv":"45","_linkedscene":"scene_06","_url":"http://fw/tour/panos/06.tiles/thumb.jpg"}
+    ],
+
+    "scene_06": [
+      {"_name":"spot1", "_style":"skin_hotspotstyle", "_ath":"55.992","_atv":"39.861","_linkedscene":"scene_04","_url":"http://fw/tour/panos/04.tiles/thumb.jpg"},
+      {"_name":"spot3","_style":"skin_hotspotstyle","_ath":"8.328","_atv":"4.623","_linkedscene":"scene_06","_url":"http://fw/tour/panos/06.tiles/thumb.jpg"}
+    ]
+  }
+}

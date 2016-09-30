@@ -1,0 +1,136 @@
+<krpano>
+	<include url="skin/vtourskin.xml" />
+
+	<!-- Include autotour player and image/video hotspots with styles -->
+	<include url="robertitor/autotour_player.xml"/>
+	
+	
+	<!-- customize skin settings: maps, gyro, thumbnails, tooltips, layout, design, ... -->
+	<skin_settings maps="false"
+	               maps_type="bing"
+	               maps_bing_api_key=""
+	               maps_zoombuttons="true"
+	               gyro="true"
+	               littleplanetintro="false"
+	               title="true"
+	               thumbs="true"
+	               thumbs_width="120" thumbs_height="80" thumbs_padding="10" thumbs_crop="0|40|240|160"
+	               thumbs_opened="false"
+	               thumbs_text="false"
+	               thumbs_dragging="true"
+	               thumbs_onhoverscrolling="false"
+	               thumbs_scrollbuttons="false"
+	               thumbs_scrollindicator="false"
+	               thumbs_loop="false"
+	               tooltips_buttons="false"
+	               tooltips_thumbs="false"
+	               tooltips_hotspots="true"
+	               tooltips_mapspots="false"
+	               deeplinking="false"
+	               loadscene_flags="KEEPVIEW"
+	               loadscene_blend="OPENBLEND(0.5, 0.0, 0.75, 0.05, linear)"
+	               loadscene_blend_prev="SLIDEBLEND(0.5, 180, 0.75, linear)"
+	               loadscene_blend_next="SLIDEBLEND(0.5,   0, 0.75, linear)"
+	               loadingtext="loading..."
+	               layout_width="100%"
+	               layout_maxwidth.normal="900"
+	               layout_maxwidth.mobile=""
+	               controlbar_width.normal="-44"
+	               controlbar_width.mobile="100%"
+	               controlbar_height.normal="38"
+	               controlbar_height.mobile="34"
+	               controlbar_offset.normal="22"
+	               controlbar_offset.mobile="0"
+	               controlbar_offset_closed="-40"
+	               controlbar_overlap.normal="7"
+	               controlbar_overlap.mobile="2"
+	               design_skin_images="vtourskin.png"
+	               design_bgcolor="0x000000"
+	               design_bgalpha="0.5"
+	               design_bgborder="0 0xFFFFFF 1.0"
+	               design_bgroundedge.normal="9"
+	               design_bgroundedge.mobile="1"
+	               design_bgshadow="0 0 9 0xFFFFFF 0.5"
+	               design_thumbborder_bgborder="4 0xFFFFFF 1.0"
+	               design_thumbborder_padding="2"
+	               design_thumbborder_bgroundedge="5"
+	               design_text_css="color:#FFFFFF; font-family:Arial; font-weight:bold;"
+	               design_text_shadow="1"
+	               />
+
+	<!--
+	    For an alternative skin design either change the <skin_settings> values 
+	    from above or optionally include one of the predefined designs from below.
+	    Either by removing the 'xml-if-check' from the particular <include> element
+	    or by adding e.g. initvar:{design:'flat_light'} to the embedpano() call in
+	    the html file:
+	-->
+	<include url="skin/vtourskin_design_glass.xml"       if="design === 'glass'"       />
+	<include url="skin/vtourskin_design_flat.xml"        if="design === 'flat'"        />
+	<include url="skin/vtourskin_design_flat_light.xml"  if="design === 'flat_light'"  />
+	<include url="skin/vtourskin_design_ultra_light.xml" if="design === 'ultra_light'" />
+	<include url="skin/vtourskin_design_117.xml"         if="design === '117'"         />
+
+<!-- Resolving network issues -->
+<network downloadqueues="0"
+    decodequeues="0"
+    retrycount="4"
+    caching="true"
+    cachesize="20"
+     />
+
+
+	<!-- startup action - load the first pano/scene -->
+<action name="startup" autorun="onstart">
+    if(startscene === null, 
+        set(startscenename,scene_0006); 
+        set(sath,0); 
+        set(satv,0); 
+        set(satfov,100); 
+      , 
+        txtsplit(startscene, ':', startscenename, sath, satv, satfov); );
+
+       if( !scene[get(startscenename)], copy(startscenename,scene[0].name); );
+        clamp(sath, -180, 180); 
+    clamp(satv, -90, 90); 
+    clamp(satfov, 0, 180); 
+    loadscene(get(startscenename), null, MERGE);
+    lookat(get(sath), get(satv), get(satfov));
+    if(startactions !== null, startactions() );
+</action>
+
+<action name="update_url_new_scene">
+        js( window.history.pushState("object or string", "Title", get(browser.location)));
+</action>
+
+<action name="update_url">
+    set(cur_hlookat, get(view.hlookat));
+    loop(cur_hlookat GT 180, sub(cur_hlookat, 360)); 
+    loop(cur_hlookat LT -180, add(cur_hlookat, 360)); 
+    roundval(cur_hlookat,2);
+    set(cur_vlookat, get(view.vlookat)); 
+    roundval(cur_vlookat,2);
+    set(cur_fov, get(view.fov)); 
+    roundval(cur_fov,2);
+
+    txtadd(new_line, 'startscene=', get(scene[get(xml.scene)].name), ':', get(cur_hlookat), ':', get(cur_vlookat), ':',  get(cur_fov)); 
+    indexoftxt(s_pos, get(browser.location), 'startscene=', 0);
+    if(s_pos GT 0,
+        indexoftxt(e_pos,get(browser.location), '&amp;', s_pos);            
+        if(e_pos LT s_pos, set(e_pos, get(browser.location.length)));            
+        sub(len, e_pos, s_pos); 
+        subtxt(toreplace, get(browser.location), get(s_pos), get(len));            
+        txtreplace(new_url, browser.location, get(toreplace), get(new_line));
+    ,
+        indexoftxt(q_pos, get(browser.location), '?', 0);
+        if(q_pos LT 0, 
+            txtadd(new_url, get(browser.location), '?', get(new_line)); 
+        ,
+            txtadd(new_url, get(browser.location), '&amp;', get(new_line));
+        );
+    );
+
+    js( window.history.replaceState("object or string", "Title", get(new_url)));        
+</action>
+
+</krpano>

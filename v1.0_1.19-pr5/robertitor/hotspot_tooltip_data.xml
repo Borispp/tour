@@ -1,0 +1,18 @@
+﻿<krpano>	
+	<!-- Hotspots tooltip data -->		
+	<hotspot_tooltips_data>	 		
+		
+		<!-- Image hotspots -->
+		<hotspot_name name="pic_backdeck" tooltip="Image Backdeck"/>
+		<hotspot_name name="pic_backyard" tooltip="Image Backyard"/>		
+		<hotspot_name name="pic_front" 		tooltip="Image Front"/>		
+		<!-- add your new image hotspot data here. Name to be unique and equal as hotspots/image file name with no extension -->
+		
+		<!-- Video hotspots -->
+		<hotspot_name name="cats" 				tooltip="Video Cats"/>		
+		<hotspot_name name="video_3"			tooltip="Video example:video_3"/>		
+		<hotspot_name name="video"				tooltip="Video example:video"/>		
+		<!-- add your new video hotspot data here. Name to be unique and equal as hotspots/video file name with no extension -->
+				
+	</hotspot_tooltips_data>			
+</krpano>

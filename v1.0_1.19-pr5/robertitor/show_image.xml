@@ -1,0 +1,67 @@
+﻿<krpano>
+
+	<magflyouts_settings 
+		magflyouts_included="true"
+		hotstpot2screen_ratio="0.85" /> <!-- 0.9 = ninety percent of screenheight or screenwidth -->
+	
+		
+	<events name="flyout_events" keep="true" 
+		onresize="magflyouts_image_adapt();" 
+		onnewpano="magflyouts_image_hide();"
+		/>
+			
+		
+	<plugin name="magflyouts_image" keep="true" align="center" alpha="0" handcursor="true"  zorder="10" capture="true" autoalpha="true"	scalechildren="false"		
+			onloaded="set(magflyouts_image_loaded,true);set(magflyouts_image_w,get(plugin[magflyouts_image].imagewidth));set(magflyouts_image_h,get(plugin[magflyouts_image].imageheight));magflyouts_image_adapt();tween(plugin[magflyouts_image].alpha,1,1);" onclick="magflyouts_image_hide();"
+	/> 
+	<plugin name="magflyouts_x" 								 scale="1.0"	url="../robertitor/x.png" keep="true" align="topright" edge="center" alpha="1" handcursor="true" enabled="true" preload="true"	visible="true" x="0" y="0" zorder="8" parent="magflyouts_image" onclick="magflyouts_image_hide();"/> 												
+	<plugin name="magflyouts_x" devices="mobile" scale="1.5" 	url="../robertitor/x.png" keep="true" align="topright" edge="center" alpha="1" handcursor="true" enabled="true" preload="true"	visible="true" x="0" y="0" zorder="8" parent="magflyouts_image" onclick="magflyouts_image_hide();"/> 														
+			
+	<plugin name="magflyouts_load_image" url="../robertitor/loading.png" keep="true" align="center" alpha="1" handcursor="false" enabled="false" preload="true"	visible="false" zorder="7"/> 										
+			 	
+	
+	<action name="magflyouts_image_show">	
+			
+		<!--Autotour adaptation of the image display not to have X button on tor right visible-->
+		if(autotour_started,
+		<!--hide X-->
+		set(plugin[magflyouts_x].visible,false);
+		,
+		<!--Show x NOT AUTOTOUR-->
+		set(plugin[magflyouts_x].visible,true);
+		);
+				
+		set(plugin[magflyouts_image].alpha, 0);
+		set(plugin[magflyouts_load_image].visible,true);
+				
+		txtadd(magflyouts_image_file_name,'%SWFPATH%/images/',%1,'.jpg');				
+		
+		set(plugin[magflyouts_image].url,get(magflyouts_image_file_name));
+		tween(plugin[magflyouts_image].alpha, 1);
+	</action>
+	
+ 	<action name="magflyouts_image_hide">									
+		set(plugin[magflyouts_load_image].visible,false);
+		tween(plugin[magflyouts_image].alpha,0,0.2); 	
+	</action>
+
+	<action name="magflyouts_image_adapt">					
+		if(magflyouts_image_loaded,
+		delayedcall(0.1,set(plugin[magflyouts_load_image].visible,false););
+		div(magflyouts_image_expected_aspect,get(magflyouts_image_w),get(magflyouts_image_h));div(screen_expected_aspect,stagewidth,stageheight);fix_magflyouts_aspectresize(magflyouts_image_expected_aspect,screen_expected_aspect);		
+		);			
+	</action>
+
+	<action name="fix_magflyouts_aspectresize">		  		
+  	if(%2 LE %1,
+  		mul(new_magflyouts_image_width,stagewidth,magflyouts_settings.hotstpot2screen_ratio);
+  		set(plugin[magflyouts_image].width,get(new_magflyouts_image_width));
+  		set(plugin[magflyouts_image].height,prop);,
+  		mul(new_magflyouts_image_height,stageheight,magflyouts_settings.hotstpot2screen_ratio);
+  		set(plugin[magflyouts_image].height,get(new_magflyouts_image_height));
+  		set(plugin[magflyouts_image].width,prop);); 		
+	</action>
+	
+	
+
+</krpano>

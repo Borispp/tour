@@ -1,0 +1,22 @@
+﻿<krpano>
+
+	<!-- 	
+	NOTE: IF you are not using vtourskin include this file in tour.xml
+	-->
+	
+	<skin_settings name="editor" keep="true"
+								 tooltips_hotspots="true" 
+	               loadscene_flags="MERGE"
+	               loadscene_blend="BLEND(0.5)"
+	/>
+	
+	<style name="skin_hotspotstyle" url="vtourskin_hotspot.png" scale="0.5" edge="top" oy="0" distorted="false" hide_text="showtext('');" visible="true"
+	       onclick="ifnot(autotour_started,if(linkedscene,hide_text();tween(scale,0.25,0.5); tween(oy,-20,0.5); tween(alpha,0,0.5); looktohotspot(); loadscene(get(linkedscene),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend));););"	              	       
+	       onloaded_y="if(skin_settings[editor].tooltips_hotspots,if(linkedscene, copy(hotspot[get(name)].tooltip,scene[get(linkedscene)].title); ));"
+	       onhover="ifnot(autotour_started,if(skin_settings[editor].tooltips_hotspots,if(linkedscene, showtext(get(scene[get(linkedscene)].title),robertitior_text_style) );););"
+	       ondown="onhover"
+	/>
+	
+
+	
+</krpano>

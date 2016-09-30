@@ -1,0 +1,394 @@
+﻿<krpano>
+		
+	<!-- menu -->		
+	<skin_settings name="menu"
+     			   keep="true"
+	               menu_x="10"
+	               menu_y="10"
+	               menu_height="434"
+	               menu_width="145"
+	               menu_1_width="145"
+	               menu_2_width="145"
+	               menu_3_width="145"
+	               menu_4_width="145"
+	               menu_item_width_offset="0"
+	               menu_1_itemnumber="6"
+	               menu_2_itemnumber="2"
+	               menu_3_itemnumber="1"
+	               menu_4_itemnumber="3"
+	               menu_itemheight="30"
+	               menu_itemdistance="2"
+	               menu_overscroll="false"
+	               />
+	               
+	<style name="menuitem" url="../plugins/textfield.swf" children="false" align="left" edge="left" x="0" y="0" vcenter="true" width="100%" height="100%" visible="false" enabled="false"
+		background="true" backgroundcolor="0x000000" backgroundalpha="0.0" bordercolor="0x000000" borderwidth="1" borderalpha="1" border="false" padding="0 0 0 5"
+		css="text-align:left; color:#111111; font-family:Arial; font-weight:normal; font-size:12px;"		
+	/>				 
+
+	<style name="menuitem_separator" url="../plugins/textfield.swf" children="false" align="left" edge="left" x="0" y="0" vcenter="true" width="100%" height="100%" visible="false" enabled="false"
+		background="true" backgroundcolor="0x000000" backgroundalpha="0.0" bordercolor="0x000000" borderwidth="1" borderalpha="1" border="false" padding="0 0 0 5" separator="true"
+		css="text-align:left; color:#666666; font-family:Arial; font-weight:normal; font-size:12px;"		
+	/>				 
+	
+	<style name="menu_item_container" type="container" keep="true" bgalpha="0.0" 	 bgcolor="0xff0000" width="100%" height="25" y="0" x="0" maskchildren="true" ox="" oy="" bgcapture="true" enabled="true" handcursor="true"		
+		onover="set(layer[get(childtextfield)].backgroundalpha,0.5);set(layer[get(childtextfield)].css,text-align:left; color:#ffffff; font-family:Arial; font-weight:normal; font-size:12px;);" 		
+		onout="set(layer[get(childtextfield)].backgroundalpha,0.0);set(layer[get(childtextfield)].css,text-align:left; color:#111111; font-family:Arial; font-weight:normal; font-size:12px;);" 		
+		onclick="if(layer[get(childtextfield)].linkedaction,callwith(layer[get(childtextfield)], linkedaction););"
+	/>	
+	
+	<style name="menubutton_top_item" url="../plugins/textfield.swf" children="false" align="lefttop" vcenter="true" hcenter="true" visible="true" handcursor="false" roundedge="5"
+		onloaded="
+		set(css,text-align:center; color:#f37921; font-family:Arial; font-weight:bold; font-size:14px;);" 
+		shadow="1.0" shadowrange="10.0" shadowangle="0" shadowcolor="0xffffff" shadowalpha="1.0"
+		bordercolor="0xFFFFFF" borderwidth="1" borderalpha="1" border="false" background="true" backgroundcolor="0x000000" backgroundalpha="0.7" 		
+		onover="onover2();" 		
+		onout="onout2();" 						
+	/>
+	
+	<style name="submenubutton" url="../plugins/textfield.swf" children="false" align="lefttop" vcenter="true" hcenter="true" visible="false" handcursor="false" roundedge="5"
+		onloaded="set(css,text-align:center; color:#f37921; font-family:Arial; font-weight:bold; font-size:14px;);" bordercolor="0xFFFFFF" borderwidth="1" borderalpha="1" border="false" background="true" backgroundcolor="0x000000" backgroundalpha="0.5" 				
+	/>
+	
+
+			               
+	<layer name="menu_top" type="container" keep="true" bgalpha="0.0" bgcolor="0x555555" width="455" height="35" y="10" x="10" align="topleft" maskchildren="false" ox="" oy="" bgcapture="true" handcursor="false" state="closed" onloaded="" visible="true" zorder="98">
+	  <layer name="menu_top_1"  style="menubutton_top_item" html="HOTSPOT" 			x="0" 		y="0" width="145" height="35" onout2="menu_close(1);" onover2="menu_open(1);"/>	
+		<layer name="menu_top_2"  style="menubutton_top_item" html="AUTOTOUR" 		x="155" 	y="0" width="145" height="35" onout2="menu_close(2);" onover2="menu_open(2);"/>
+		<layer name="menu_top_3"  style="menubutton_top_item" html="SCENE"  			x="310" 	y="0" width="145" height="35" onout2="menu_close(3);" onover2="menu_open(3);"/>		
+	</layer>	
+	
+	<layer name="submenu_top" type="container" keep="true" bgalpha="0.0" bgcolor="0x555555" width="580" height="35" y="55" x="10" align="topleft" maskchildren="false" ox="" oy="" bgcapture="false" handcursor="false" state="closed" onloaded="" visible="true" zorder="98">
+	  <layer name="submenu_top_1_2"  		style="submenubutton" html="DONE" 					x="0" 		y="0" width="145" height="35" onclick="unmask_menu();	hide_button(submenu_top_1_2); linkedscene_skin_showthumbs(false);		"/>	
+	  <layer name="submenu_top_1_5"  		style="submenubutton" html="DONE" 					x="0" 		y="0" width="145" height="35" onclick="restore_hotspots_attributes();	unmask_menu();	hide_button(submenu_top_1_5); hide_moved_hotspot_info();		"/>	
+	  <layer name="submenu_top_1_6_1" 	style="submenubutton" html="CONFIRM DELETE" x="0" 		y="0" width="145" height="35" onclick="confirmed_hotspot_delete_box();"/>	
+	  <layer name="submenu_top_1_6_2" 	style="submenubutton" html="CANCEL" 				x="155" 	y="0" width="145" height="35" onclick="cancel_hotspot_delete_box();"/>	
+	                                  	
+	  <layer name="submenu_top_2_1_0" 	style="submenubutton" html="START SCENE" 		x="0" 		y="0" width="145" height="35" onclick="add_autorotate_startscene_step(autotour_start_scene);"/>	
+	  <layer name="submenu_top_2_1_1" 	style="submenubutton" html="ADD NEW POINT" 	x="0" 		y="0" width="145" height="35" onclick="add_autorotate_hotspots_step(new_point);"/>	
+	  <layer name="submenu_top_2_1_2" 	style="submenubutton" html="DONE" 					x="155" 	y="0" width="145" height="35" onclick="preview_hotspot_data();autotour_show_preview_save_cancel();"/>	
+	  <layer name="submenu_top_2_1_3_1" style="submenubutton" html="CANCEL" 				x="155" 	y="0" width="145" height="35" onclick="unmask_menu();	hide_button(submenu_top_2_1_0); hide_button(submenu_top_2_1_3_1); linkedscene_skin_showthumbs(false); delete_added_autotour_points();"/>	
+	  <layer name="submenu_top_2_1_3_2" style="submenubutton" html="CANCEL" 				x="310" 	y="0" width="145" height="35" onclick="unmask_menu();	hide_button(submenu_top_2_1_1); hide_button(submenu_top_2_1_2);linkedscene_skin_showthumbs(false); hide_button(submenu_top_2_1_3_2); 	  hide_button(submenu_top_2_3_1); hide_button(submenu_top_2_4_1); delete_autorotate_hotspots_steps_in_memory();"/>	
+		<layer name="submenu_top_2_2_1"		style="submenubutton" html="PREVIEW" 				x="0" 		y="0" width="145" height="35" onclick="start_autotour(preview_autotour);"/>	
+		<layer name="submenu_top_2_2_2"		style="submenubutton" html="SAVE TO FILE" 	x="155" 	y="0" width="145" height="35" onclick="unmask_menu();	hide_button(submenu_top_2_2_1); hide_button(submenu_top_2_2_2);hide_button(submenu_top_2_2_3); hide_button(submenu_top_2_1_3_2); save_autotour2file();delete_added_autotour_points();"/>	
+		<layer name="submenu_top_2_2_3"		style="submenubutton" html="CANCEL POINTS" 	x="310" 	y="0" width="145" height="35" onclick="unmask_menu();	hide_button(submenu_top_2_2_1); hide_button(submenu_top_2_2_2);hide_button(submenu_top_2_2_3); delete_added_autotour_points();"/>			
+		                               					                             		
+		<layer name="submenu_top_2_3_1"		style="submenubutton" html="SHOW IMAGE" 		x="0" 		y="45" width="145" height="35" onclick="add_autorotate_image_step(image_point);"/>	
+		<layer name="submenu_top_2_4_1"		style="submenubutton" html="LOAD NEW SCENE" x="0" 		y="90" width="145" height="35" onclick="add_autotour_loadscene_point();"/>	
+		
+	</layer>	
+
+
+	<layer name="menu_1_line" keep="true" type="container" bgalpha="0.0" bgcolor="0xff0000" width="100%" height="1" y="45" maskchildren="false" bgcapture="false" handcursor="false" visible="true" onloaded="set(align,topleft);set(edge,topleft);" zorder="54" >
+		
+	<layer name="menu_1_line2" keep="true" type="container" 	 			bgalpha="0.0" bgcolor="0xff0000" width="145" 	height="0" 		y="0" x="10" 	maskchildren="true" bgcapture="false" handcursor="false" align="bottomleft" edge="bottomleft" visible="true" onloaded="copy(width,skin_settings[menu].menu_width);delayedcall(0.1,distribute_manu_items_1(););" zorder="0" oy="-1" bgroundedge="5">
+				<layer name="menu_1_outer1" type="container" keep="true" 	bgalpha="1.0" bgcolor="0xaaaaaa" width="100%" height="100%" y="0" x="0" 	maskchildren="true" bgcapture="true" handcursor="false" align="topleft" edge="topleft"	state="closed"	zorder="1"	visible="true" onover="menu_open(1)" onout="menu_close(1);">			
+				
+				<layer name="menu_1_item_1_container" style="menu_item_container">
+					<layer name="menu_1_item_1"  				style="menuitem"  						html="ADD IMAGE HOTSPOT"	linkedaction="calljs_open_image(image_hotspot);" />
+				</layer>
+				
+				<layer name="menu_1_item_2_container" style="menu_item_container">
+					<layer name="menu_1_item_2"  				style="menuitem"  						html="ADD LINK TO SCENE" 	linkedaction="mask_menu(1);add_link2scene();" />							
+				</layer>
+								
+				<layer name="menu_1_item_3_container" style="menu_item_container">
+					<layer name="menu_1_item_3"  				style="menuitem"  						html="ADD VIDEO HOTSPOT" 	linkedaction="calljs_video_hotspot(video_hotspot);" />							
+				</layer>
+									
+				<layer name="menu_1_item_4_container" style="menu_item_container">
+					<layer name="menu_1_item_4"  				style="menuitem"  						html="MOVE HOTSPOTS" 			linkedaction="mask_menu(1);move_hotspots();" />
+				</layer>
+								
+				<layer name="menu_1_item_5_container" style="menu_item_container">
+					<layer name="menu_1_item_5"  				style="menuitem"  						html="DELETE HOTSPOT" 		linkedaction="mask_menu(1);delete_hotspots();" />
+				</layer>
+				
+				<layer name="menu_1_item_6_container" style="menu_item_container">
+					<layer name="menu_1_item_6"  				style="menuitem"  						html="SAVE HOTSPOTS" 			linkedaction="round_hotspots_ath_atv_three_diggits();calljs_save_hotspots();" />
+				</layer>
+										
+			</layer>		
+		</layer>
+	
+	
+	
+	
+	
+		<layer name="menu_2_line2" keep="true" type="container" 	 bgalpha="0.0" bgcolor="0xff0000" width="145" 	height="0" 		y="0" x="165" maskchildren="true" bgcapture="false" handcursor="false" align="bottomleft" edge="bottomleft" visible="true" onloaded="copy(width,skin_settings[menu].menu_width);delayedcall(0.1,distribute_manu_items_2(););" zorder="0" oy="-1" bgroundedge="5">
+			<layer name="menu_2_outer1" type="container" keep="true" bgalpha="1.0" bgcolor="0xaaaaaa" width="100%" 	height="100%" y="0" x="0" 	maskchildren="true" bgcapture="true" handcursor="false" align="topleft" edge="topleft"	state="closed"	zorder="1"	visible="true" onover="menu_open(2)" onout="menu_close(2);">			
+				
+				<layer name="menu_2_item_1_container" style="menu_item_container">					
+					<layer name="menu_2_item_1"  				style="menuitem"  											html="CREATE NEW"					linkedaction="mask_menu(2);show_button(submenu_top_2_1_0); show_button(submenu_top_2_1_3_1);" />
+				</layer>
+				
+				<layer name="menu_2_item_2_container" style="menu_item_container">
+					<layer name="menu_2_item_2"  				style="menuitem"  											html="TEST AUTOTOUR" 			linkedaction="menu_close(2);start_autotour(real_autotour);" />							
+				</layer>
+				
+			</layer>		
+		</layer>
+		
+		
+		
+		
+		<layer name="menu_3_line2" keep="true" type="container" 	 bgalpha="0.0" bgcolor="0xff0000" width="145" 	height="0" 		y="0" x="320" maskchildren="true" bgcapture="false" handcursor="false" align="bottomleft" edge="bottomleft" visible="true" onloaded="copy(width,skin_settings[menu].menu_width);delayedcall(0.1,distribute_manu_items_3(););" zorder="0" oy="-1" bgroundedge="5">
+			<layer name="menu_3_outer1" type="container" keep="true" bgalpha="1.0" bgcolor="0xaaaaaa" width="100%" 	height="100%" y="0" x="0" 	maskchildren="true" bgcapture="true" handcursor="false" align="topleft" edge="topleft"	state="closed"	zorder="1"	visible="true" onover="menu_open(3)" onout="menu_close(3);">			
+				
+				<layer name="menu_3_item_1_container" style="menu_item_container">
+					<layer name="menu_3_item_1"  				style="menuitem"  						html="GOTO SCENE"				linkedaction="mask_menu(3);show_button(submenu_top_1_2);normal_loadscene_thumb_select();" />
+				</layer>
+				
+			</layer>
+		</layer>
+			
+	</layer>	
+	
+	<action name="set_menu_koeficients">
+		set(menu_items_offset,get(skin_settings[menu].menu_itemheight));
+		add(menu_items_offset,get(skin_settings[menu].menu_itemdistance));
+	</action>
+
+	
+	<action name="distribute_manu_items_1">		
+		set_menu_koeficients();						
+			for(set(menu_1_item_y,1), menu_1_item_y LE skin_settings[menu].menu_1_itemnumber, inc(menu_1_item_y),						
+				sub(menu_koef,menu_1_item_y,1);
+				mul(menu_1_new_y,menu_koef,menu_items_offset);			
+				add(menu_1_new_y,skin_settings[menu].menu_itemdistance);						
+				txtadd(menu_1_item_container_2_change,'menu_1_item_',get(menu_1_item_y),'_container');		
+				txtadd(menu_1_item_2_change,'menu_1_item_',get(menu_1_item_y));			
+				
+				set(layer[get(menu_1_item_container_2_change)].childtextfield,get(menu_1_item_2_change));
+				
+				if(layer[get(menu_1_item_2_change)].separator,					
+					set(layer[get(menu_1_item_container_2_change)].enabled,false);	
+					set(layer[get(menu_1_item_container_2_change)].handcursor,false);	
+				);
+								
+				set(layer[get(menu_1_item_2_change)].y,0);						
+				copy(layer[get(menu_1_item_container_2_change)].y,menu_1_new_y);						
+				
+				copy(layer[get(menu_1_item_2_change)].css,layer[get(menu_1_item_2_change)].css);
+				set(layer[get(menu_1_item_2_change)].visible,true);				
+				set(layer[get(menu_1_item_container_2_change)].visible,true);
+				
+			);			
+			
+			add(menu_1_new_y,menu_items_offset);						
+			set(layer[menu_1_line2].height,get(menu_1_new_y));
+			copy(menu_1_height,menu_1_new_y);mul(menu_1_height_neg,menu_1_height,-1);			
+			
+			mul(y_close_temp_3,menu_1_new_y,-1);		
+			set(layer[menu_1_line2].y_close,get(y_close_temp_3));
+						
+			set(layer[menu_1_line2].y,get(y_close_temp_3));
+			
+			set(layer[menu_1_outer1].y, get(menu_1_height_neg)); set(layer[menu_1_outer1].state,'closed'); set(layer[menu_1_outer1].visible,true));				
+			
+	</action>	
+	
+	
+	<action name="distribute_manu_items_2">		
+		set_menu_koeficients();						
+			for(set(menu_2_item_y,1), menu_2_item_y LE skin_settings[menu].menu_2_itemnumber, inc(menu_2_item_y),						
+				sub(menu_koef,menu_2_item_y,1);
+				mul(menu_2_new_y,menu_koef,menu_items_offset);			
+				add(menu_2_new_y,skin_settings[menu].menu_itemdistance);						
+				txtadd(menu_2_item_container_2_change,'menu_2_item_',get(menu_2_item_y),'_container');			
+				txtadd(menu_2_item_2_change,'menu_2_item_',get(menu_2_item_y));			
+				
+				set(layer[get(menu_2_item_container_2_change)].childtextfield,get(menu_2_item_2_change));
+			
+				if(layer[get(menu_2_item_2_change)].separator,
+				
+					set(layer[get(menu_2_item_container_2_change)].enabled,false);	
+					set(layer[get(menu_2_item_container_2_change)].handcursor,false);	
+				);
+				
+				
+				set(layer[get(menu_2_item_2_change)].y,0);						
+				copy(layer[get(menu_2_item_container_2_change)].y,menu_2_new_y);						
+				
+				copy(layer[get(menu_2_item_2_change)].css,layer[get(menu_2_item_2_change)].css);
+				set(layer[get(menu_2_item_2_change)].visible,true);				
+				set(layer[get(menu_2_item_container_2_change)].visible,true);
+				
+				
+				
+			);			
+			
+			add(menu_2_new_y,menu_items_offset);						
+			set(layer[menu_2_line2].height,get(menu_2_new_y));
+			copy(menu_2_height,menu_2_new_y);mul(menu_2_height_neg,menu_2_height,-1);			
+			
+			mul(y_close_temp_3,menu_2_new_y,-1);		
+			set(layer[menu_2_line2].y_close,get(y_close_temp_3));
+						
+			set(layer[menu_2_line2].y,get(y_close_temp_3));
+			
+			set(layer[menu_2_outer1].y, get(menu_2_height_neg)); set(layer[menu_2_outer1].state,'closed'); set(layer[menu_2_outer1].visible,true));				
+			
+			
+	</action>			
+			
+	<action name="distribute_manu_items_3">		
+		set_menu_koeficients();						
+			for(set(menu_3_item_y,1), menu_3_item_y LE skin_settings[menu].menu_3_itemnumber, inc(menu_3_item_y),						
+				sub(menu_koef,menu_3_item_y,1);
+				mul(menu_3_new_y,menu_koef,menu_items_offset);			
+				add(menu_3_new_y,skin_settings[menu].menu_itemdistance);						
+				txtadd(menu_3_item_container_2_change,'menu_3_item_',get(menu_3_item_y),'_container');			
+				txtadd(menu_3_item_2_change,'menu_3_item_',get(menu_3_item_y));			
+				
+				set(layer[get(menu_3_item_container_2_change)].childtextfield,get(menu_3_item_2_change));
+				
+				if(layer[get(menu_3_item_2_change)].separator,
+					
+					set(layer[get(menu_3_item_container_2_change)].enabled,false);	
+					set(layer[get(menu_3_item_container_2_change)].handcursor,false);	
+				);
+				
+				
+				set(layer[get(menu_3_item_2_change)].y,0);						
+				copy(layer[get(menu_3_item_container_2_change)].y,menu_3_new_y);						
+				
+				copy(layer[get(menu_3_item_2_change)].css,layer[get(menu_3_item_2_change)].css);
+				set(layer[get(menu_3_item_2_change)].visible,true);				
+				set(layer[get(menu_3_item_container_2_change)].visible,true);
+				
+			);
+			
+			
+			add(menu_3_new_y,menu_items_offset);						
+			set(layer[menu_3_line2].height,get(menu_3_new_y));
+			copy(menu_3_height,menu_3_new_y);mul(menu_3_height_neg,menu_3_height,-1);			
+			
+			mul(y_close_temp_3,menu_3_new_y,-1);		
+			set(layer[menu_3_line2].y_close,get(y_close_temp_3));
+						
+			set(layer[menu_3_line2].y,get(y_close_temp_3));
+			
+			set(layer[menu_3_outer1].y, get(menu_3_height_neg)); set(layer[menu_3_outer1].state,'closed'); set(layer[menu_3_outer1].visible,true));				
+			
+			
+	</action>	
+			
+	
+		<action name="distribute_manu_items_4">		
+		set_menu_koeficients();						
+			for(set(menu_4_item_y,1), menu_4_item_y LE skin_settings[menu].menu_4_itemnumber, inc(menu_4_item_y),						
+				sub(menu_koef,menu_4_item_y,1);
+				mul(menu_4_new_y,menu_koef,menu_items_offset);			
+				add(menu_4_new_y,skin_settings[menu].menu_itemdistance);						
+				txtadd(menu_4_item_container_2_change,'menu_4_item_',get(menu_4_item_y),'_container');			
+				txtadd(menu_4_item_2_change,'menu_4_item_',get(menu_4_item_y));			
+				
+				set(layer[get(menu_4_item_container_2_change)].childtextfield,get(menu_4_item_2_change));
+				
+				if(layer[get(menu_4_item_2_change)].separator,
+					
+					set(layer[get(menu_4_item_container_2_change)].enabled,false);	
+					set(layer[get(menu_4_item_container_2_change)].handcursor,false);	
+				);
+				
+				
+				set(layer[get(menu_4_item_2_change)].y,0);						
+				copy(layer[get(menu_4_item_container_2_change)].y,menu_4_new_y);						
+				
+				copy(layer[get(menu_4_item_2_change)].css,layer[get(menu_4_item_2_change)].css);
+				set(layer[get(menu_4_item_2_change)].visible,true);				
+				set(layer[get(menu_4_item_container_2_change)].visible,true);
+				
+			);
+			
+			
+			add(menu_4_new_y,menu_items_offset);						
+			set(layer[menu_4_line2].height,get(menu_4_new_y));
+			copy(menu_4_height,menu_4_new_y);mul(menu_4_height_neg,menu_4_height,-1);			
+			
+			mul(y_close_temp_4,menu_4_new_y,-1);		
+			set(layer[menu_4_line2].y_close,get(y_close_temp_4));
+						
+			set(layer[menu_4_line2].y,get(y_close_temp_4));
+			
+			set(layer[menu_4_outer1].y, get(menu_4_height_neg)); set(layer[menu_4_outer1].state,'closed'); set(layer[menu_4_outer1].visible,true));				
+			
+			
+	</action>	
+
+	<action name="menu_open">		
+		
+		if(%1 EQ 1,set(layer[menu_1_outer1].state,'open');tween(layer[menu_1_outer1].y, 0,0.2)); 
+		if(%1 EQ 2,set(layer[menu_2_outer1].state,'open');tween(layer[menu_2_outer1].y, 0,0.2)); 
+		if(%1 EQ 3,set(layer[menu_3_outer1].state,'open');tween(layer[menu_3_outer1].y, 0,0.2)); 
+		if(%1 EQ 4,set(layer[menu_4_outer1].state,'open');tween(layer[menu_4_outer1].y, 0,0.2)); 
+		
+	</action>
+
+	<action name="menu_close">		
+		if(%1 EQ 1,tween(layer[menu_1_outer1].y, get(menu_1_height_neg), distance(get(menu_1_height_neg),0.5), default,set(layer[menu_1_outer1].state,'closed'))); 
+		if(%1 EQ 2,tween(layer[menu_2_outer1].y, get(menu_2_height_neg), distance(get(menu_2_height_neg),0.5), default,set(layer[menu_2_outer1].state,'closed'))); 
+		if(%1 EQ 3,tween(layer[menu_3_outer1].y, get(menu_3_height_neg), distance(get(menu_3_height_neg),0.5), default,set(layer[menu_3_outer1].state,'closed'))); 
+		if(%1 EQ 4,tween(layer[menu_4_outer1].y, get(menu_4_height_neg), distance(get(menu_4_height_neg),0.5), default,set(layer[menu_4_outer1].state,'closed'))); 
+		
+	</action>
+	
+	<action name="mask_menu">			
+		set(layer[menu_top].alpha,0.3);			
+		menu_close(%1);
+		set(layer[menu_top].enabled,false);
+		creating_now(true);
+	</action>
+
+	<action name="unmask_menu">			
+		set(layer[menu_top].alpha,1);
+		set(layer[menu_top].enabled,true);
+				
+		creating_now(false);
+	</action>
+
+
+	<action name="show_button">			
+		set(layer[%1].visible,true);
+	</action>	
+
+	
+	<action name="hide_button">			
+		set(layer[%1].visible,false);
+	</action>	
+	
+	<action name="hide_moved_hotspot_info">			
+		set(layer[hotspotinfo].visible,false);
+	</action>	
+	
+	<action name="show_hit_mark">			
+		set(layer[hit_button].visible,true);
+	</action>	
+	
+	<action name="hide_hit_mark">			
+		set(layer[hit_button].visible,false);
+	</action>	
+	
+	<action name="creating_now">			
+		set(autotour_creating_now,%1);		
+	</action>	
+
+	<action name="autotour_start_scene_set_show_other_buttons">			
+		set(originator,autotour_start_scene);
+
+		linkedscene_skin_showthumbs(false);
+		hide_button(submenu_top_2_1_0); hide_button(submenu_top_2_1_3_1);		
+		show_button(submenu_top_2_1_1); show_button(submenu_top_2_1_2);show_button(submenu_top_2_1_3_2); show_button(submenu_top_2_3_1);show_button(submenu_top_2_4_1);		
+	</action>	
+	
+	<action name="autotour_show_preview_save_cancel">			
+		hide_button(submenu_top_2_1_1); hide_button(submenu_top_2_1_2);
+	  hide_button(submenu_top_2_1_3_2); 
+	  hide_button(submenu_top_2_3_1); 
+	  hide_button(submenu_top_2_4_1); 
+	  linkedscene_skin_showthumbs(false);	  
+	  show_button(submenu_top_2_2_1);show_button(submenu_top_2_2_2);show_button(submenu_top_2_2_3);
+	</action>	
+		
+</krpano>

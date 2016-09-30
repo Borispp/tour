@@ -1,0 +1,460 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta property="og:site_name" content="List3d Catalog"/>
+    <meta property="og:url" content="https://api.list3d.co/catalog/tours/045765403113/tour.html"/>
+    <meta property="og:title" content="1111"/>
+    <meta property="og:image" content="https://list3dstorage-4538.kxcdn.com/tours/2/a461251452007/previews/preview_045765403113.jpg"/>
+    <meta property="og:video" content="https://list3dstorage-4538.kxcdn.com/krpano/v1.0_1.19-pr5/tour.swf?xml=https://api.list3d.co/catalog/tours/045765403113/tour.xml"/>
+    <meta property="og:video:secure_url" content="https://list3dstorage-4538.kxcdn.com/krpano/v1.0_1.19-pr5/tour.swf?xml=https://api.list3d.co/catalog/tours/045765403113/tour.xml"/>
+    <meta property="og:video:height" content="350"/>
+    <meta property="og:video:width" content="500"/>
+    <meta property="og:video:type" content="application/x-shockwave-flash"/>
+    <meta property="og:type" content="video.other"/>
+    <meta property="og:description" content="1111"/>
+    <title>List 3D Virtual Tour - 1111</title>
+    <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge"/>
+    <style>
+      @-ms-viewport { width:device-width; }
+      @media only screen and (min-device-width:800px) { html { overflow:hidden; } }
+      html { min-height:100%;height:100%; }
+      body { min-height:100%;height:100%; position:relative; overflow:hidden; margin:0; padding:0; font-family:Arial, Helvetica, sans-serif; font-size:16px; color:#FFFFFF; background-color:#000000; }
+
+      .menu {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        background: rgba(0,0,0,0.4);
+        width: 600px;
+        padding: 5px 12px;
+        margin-top: 0;
+        left: 50%;
+        transform: translate(-50%, 0)
+      }
+
+      .menu li {
+        list-style: none;
+        display: inline-block;
+      }
+
+      .menu a {
+        color: #fff;
+        font-size: 12px;
+      }
+
+      #container {
+        position: absolute;
+        z-index: 1;
+        top: 36px;
+        left: 50%;
+        width: 100%;
+        background: rgba(0,0,0,0.4);
+        padding: 0 12px;
+        width: 600px;
+        transform: translate(-50%, 0)
+      }
+
+      #container a {
+        color: #fff;
+      }
+
+      .draggablelist {
+        padding-left: 0;
+      }
+
+      .draggablelist li {
+        width: 100px;
+        height: 100px;
+        display: inline-block;
+        background: #dcd8c6;
+      }
+
+      .draggablelist li:before {
+        display: block;
+        position: absolute;
+        z-index: 0;
+        content: 'Place on pano';
+        font-size: 13px;
+        color: #9c9888;
+        text-shadow: 1px 1px 0 #fff;
+        width: 100px;
+        margin-top: 55px;
+        text-align: center;
+      }
+
+      .draggablelist li a {
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        cursor: move;
+        -webkit-transition: transform 0.2s;
+        -o-transition: transform 0.2s;
+        transition: transform 0.2s;
+      }
+
+      .draggablelist li img {
+        width: 100%;
+      }
+
+      .hui {
+        display: none !important;
+      }
+
+      .save {
+        background: #1da330;
+        color: #fff;
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translate(-20px, -50%);
+        text-decoration: none;
+        padding: 10px 18px;
+      }
+
+      .remove {
+        display: block;
+        opacity: 0;
+        position: absolute;
+        top: 40px;
+        right: -150px;
+        width: 100px;
+        height: 100px;
+        border: 1px solid rgba(255,255,255,0.3);
+        text-align: center;
+        box-sizing: border-box;
+        line-height: 100px;
+        transition: all 0.2s
+      }
+      .remove.-show {
+        opacity: 1;
+      }
+
+      .remove span {
+        display: inline-block;
+        transform: translate(0,0);
+        transition: transform 0.2s
+      }
+
+      .remove:hover span, .remove.-hover span {
+        transform: translate(0, -64px);
+      }
+
+      .remove:hover, .remove.-hover {
+        border: 1px solid rgba(255,255,255,0.7);
+        box-shadow: -4px -4px 50px rgba(255,255,255,0.7);
+      }
+
+      .hotspot-test {
+        display: none !important;
+      }
+
+    </style>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="x2js.js"></script>
+
+    <script type="text/javascript">
+
+      var init = {
+        hsArr: {},
+
+        changeHotspot: function (hotspot) {
+          var mouse = this.krpano.get("mouse");
+          var $remove = $('.remove');
+          var pt = this.krpano.screentosphere(mouse.x, mouse.y);
+          $remove.removeClass('-show -hover');
+
+          if (
+            mouse.x > ($remove.offset().left - 20) && mouse.x < ($remove.offset().left + $remove.outerWidth() + 20)
+      			&&
+      			mouse.y > ($remove.offset().top - 20) && mouse.y < ($remove.offset().top + $remove.outerHeight() + 20)
+          ) {
+            init.krpano.call("removehotspot(" + hotspot + ");");
+          }
+
+          var hs = this.krpano.get('hotspot').getArray()
+
+          // if (!Array.isArray(this.hsArr[this.krpano.get("xml.scene")])) {
+          //   this.hsArr[this.krpano.get("xml.scene")] = [];
+          // }
+
+          this.hsArr[this.krpano.get("xml.scene")] = [];
+
+          for (var i = 0; i < hs.length; i++) {
+            if (hs[i].linkedscene) {
+              this.hsArr[this.krpano.get("xml.scene")].push({'atv': hs[i].atv, 'ath': hs[i].ath, 'linkedscene': hs[i].linkedscene, 'name': hs[i].name, 'url': hs[i].url, 'added': true});
+            }
+          }
+
+          console.log(this.hsArr);
+        },
+
+        drag: function () {
+          var $body = $('body');
+
+          // Drag
+          init.$thumbsList.find('a').on('mousedown', function (e) {
+            e.preventDefault();
+
+            var krpano = init.krpano;
+            var $this = $(this);
+            var $container = $('#container');
+            var scene = $this.data('scene');
+            var thumb = $this.find('img').attr('src');
+
+            $body.on('mouseup mousemove', function handler(e) {
+              e.preventDefault();
+
+              if (e.type === 'mouseup') {
+
+                $this.css({
+                  'position': 'relative',
+                  'z-index': '1',
+                  'width': '100%',
+                  'border-radius': '0',
+                  'top': '0',
+                  'left': '0'
+                });
+
+                if (
+                  !(e.pageX > $container.offset().left && e.pageX < ($container.offset().left + $container.outerWidth())
+                  &&
+                  e.pageY > $container.offset().top && e.pageY < ($container.offset().top + $container.outerHeight()))
+                ) {
+                  console.log('Ok');
+                  krpano.call("addHotspotPoint("+thumb+", "+scene+");");
+                  init.changeHotspot();
+                } else {
+                  console.log('Ne Ok');
+                }
+
+                $body.off('mouseup mousemove', handler);
+              } else {
+                $this.css({
+                    'position': 'absolute',
+                    'z-index': '2',
+                    'width': '70px',
+                    'border-radius': '50%',
+                    'top': e.pageY-35-$container.offset().top +'px',
+                    'left': e.pageX-35-$container.offset().left +'px',
+
+                  'top': e.pageY-35-$container.offset().top +'px',
+                  'left': e.pageX-35-$container.offset().left +'px'
+                });
+              }
+            });
+          });
+
+          $('.save').on('click', function () {
+            init.changeHotspot();
+          });
+
+          $('.open-vr').on('click', function (e) {
+            e.preventDefault();
+            init.krpano.call("webvr.enterVR();");
+          });
+
+          init.$thumbsList.find('a')
+          .on('mousedown', function() {
+              $(this).data("initcoords", { x: event.x, y: event.y });
+          })
+          .on('click', function() {
+              var initCoords = $(this).data("initcoords") || { x: 0, y: 0 };
+
+              if (event.x === initCoords.x && event.y === initCoords.y) {
+                console.log($(this).data('scene'));
+                init.krpano.call("loadscene(" + $(this).data('scene') + ")")
+                $(this).data('initcoords', {x:-1, y:-1});
+              }
+          });
+        },
+
+        launch: function (scenes) {
+          var thumbsList = '';
+
+          for (var i = 0; i < scenes['scenes'].length; i++) {
+            var scene = scenes['scenes'][i].scene._name;
+            var thumb = scenes['scenes'][i].scene._thumburl;
+
+            thumbsList += '<li><a data-scene="'+ scene +'"><img src="'+ thumb +'" alt=""></a></li>';
+          }
+
+          init.$thumbsList = $(thumbsList)
+
+          $('.draggablelist').append(init.$thumbsList)
+          init.drag();
+
+
+          for (var hotspot in scenes['scenes']['hotspots']) {
+            if (hotspots.hasOwnProperty(hotspot)) {
+              init.hsArr[hotspot] = [];
+
+              for (var i = 0; i < hotspots[hotspot].length; i++) {
+                init.hsArr[hotspot].push({'atv': hotspots[hotspot][i]["_atv"], 'ath': hotspots[hotspot][i]["_ath"], 'linkedscene': hotspots[hotspot][i]["_linkedscene"], 'name': hotspots[hotspot][i]["_name"], 'url': hotspots[hotspot][i]["_url"], 'added': true});
+              }
+            }
+          }
+
+          var x2js = new X2JS();
+          var sceneXML = '';
+          // var sceneXML2 = '';
+
+          for (var i = 0; i < scenes['scenes'].length; i++) {
+            sceneXML += x2js.json2xml_str( scenes['scenes'][i] ).replace(new RegExp('\'', 'g'), '"');
+          }
+
+          // for (var i = 0; i < sceneJSON2.length; i++) {
+          //   sceneXML2 += x2js.json2xml_str( sceneJSON2[i] ).replace(new RegExp('\'', 'g'), '"');
+          // }
+
+          var xmlString = '<krpano><include url="/v1.0_1.19-pr5/skin/vtourskin.xml" /> <include url="/v1.0_1.19-pr5/robertitor/autotour_player.xml"/>'+ sceneXML +'</krpano>';
+          // var xmlString2 = '<krpano><include url="/v1.0_1.19-pr5/skin/vtourskin.xml" /> <include url="/v1.0_1.19-pr5/robertitor/autotour_player.xml"/>'+ sceneXML2 +'</krpano>';
+
+          var settings = {};
+          settings["onstart"] = "loadxml('"+xmlString+"');";
+          embedpano({swf:"../v1.0_1.19-pr5/tour.swf", id:"krpanoSWFObject", target:"pano", xml:"", vars:settings, html5:"prefer", initvars:{design:"flat", facebook: "https://api.list3d.co/catalog/tours/045765403113/tour.html"}, passQueryParameters:true});
+
+          this.krpano = document.getElementById("krpanoSWFObject");
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function(event) {
+        if (isIframe() && isIos()) {
+          return;
+        } else {
+          var myNode = document.getElementById("pano");
+          while (myNode.firstChild) {
+            myNode.removeChild(myNode.firstChild);
+          }
+
+          // var sceneJSON2 = [
+          //   {
+          //     "scene": {
+          //       "view": {
+          //         "_fisheye":"0.5",
+          //         "_stereographic":"1.0",
+          //         "_pannini":"1.0",
+          //         "_hlookat":"63.101",
+          //         "_vlookat":"-0.348",
+          //         "_fovtype":"MFOV",
+          //         "_fov":"105.000",
+          //         "_maxpixelzoom":"2.0",
+          //         "_fovmin":"70",
+          //         "_fovmax":"105",
+          //         "_limitview":"auto"
+          //       },
+          //
+          //       "preview": {
+          //         "_url":"panos/06.tiles/preview.jpg"
+          //       },
+          //
+          //       "image": {
+          //         "cube": {
+          //           "_url": "panos/06.tiles/pano_%s.jpg"
+          //         },
+          //         "mobile": {
+          //           "cube": {
+          //             "_url":"panos/06.tiles/mobile_%s.jpg"
+          //           }
+          //         }
+          //       },
+          //
+          //       "_name": "scene_06",
+          //       "_title": "Entrance 06",
+          //       "_onstart": "drawHotspots()",
+          //       "_thumburl": "panos/06.tiles/thumb.jpg",
+          //       "_lat": "",
+          //       "_lng": "",
+          //       "_heading": ""
+          //     }
+          //   }
+          // ]
+
+          $.ajax({
+            url: "/krpano/scenes.json",
+            method: "GET"
+          }).done(function(scenes) {
+            init.launch(scenes)
+          });
+
+          // Add new scene
+          // setTimeout(function () {
+          //
+          //   init.krpano.call("loadxml('"+sceneXML2+"', null);");
+          //   init.krpano.call("loadscene('scene_06')")
+          //   init.krpano.call("updatescreen();")  ;
+          //   console.log(init.krpano);
+          // }, 4000)
+        };
+      });
+      function isIframe() {
+        try {
+          return window.self !== window.top;
+        } catch (e) {
+          return true;
+        }
+      };
+      function isIos() {
+        if (userAgent().match(/iPad/i) || userAgent().match(/iPhone/i) || userAgent().match(/iPod/i)) {
+          return true;
+        }
+        return false;
+      };
+      function userAgent() {
+        return navigator.userAgent || navigator.vendor || window.opera;
+      };
+    </script>
+
+    <script src="../v1.0_1.19-pr5/tour.js"></script>
+  </head>
+  <body>
+
+    <!-- Load Facebook SDK for JavaScript -->
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v2.7&appId=1460864734220890";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+    <ul class="menu">
+      <li><a href="#" class="open-vr">VR mode</a></li>
+      <li><div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Поделиться</a></div></li>
+    </ul>
+
+    <div id="container">
+      <!-- <a class="show_coord">Show coordinates</a> -->
+
+      <ul class="draggablelist">
+      </ul>
+
+      <a href="#" class="save">Save</a>
+
+      <a href="#" class="remove"><span>Remove</span></a>
+    </div>
+
+    <div id="pano" style="width:100%;height:100%;position:relative" allowscriptaccess="always">
+      <noscript>
+        <div style="text-align:center;color:#fff">
+          ERROR:
+          <br/>
+          <br/>
+          Javascript not activated
+        </div>
+      </noscript>
+      <!-- / param(name='AllowScriptAccess' value='always') -->
+      <div id="fb-root"></div>
+
+    </div>
+
+    </script>
+  </body>
+</html>

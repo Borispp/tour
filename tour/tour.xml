@@ -1,0 +1,176 @@
+<krpano version="1.19" title="Virtual Tour">
+
+	<include url="%SWFPATH%/skin/vtourskin.xml" />
+
+	<style name="skin_drag" scale="0.35" edge="center" distorted="true"
+		border="true"
+		bordercolor="0x000000"
+		borderalpha="1.0"
+		borderwidth="1.0"
+		roundedge="1"
+		tooltip=""
+		alpha="0.8"
+		width="120"
+		height="120"
+		onover="tween(scale,0.44);tween(alpha,1);" onout="tween(scale,0.35);tween(alpha,1);"
+		onclick="if(linkedscene, set(enabled,false); skin_hidetooltips(); tween(alpha, 0.0, 0.3, default, loadscene(get(linkedscene),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend)); skin_updatescroll(); ); );"
+		onloaded="if(linkedscene AND skin_settings.tooltips_hotspots, copy(tooltip,scene[get(linkedscene)].title); loadstyle(skin_tooltips); );"
+		dragging="if(pressed, sub(dx,mouse.stagex,drag_adjustx); sub(dy,mouse.stagey,drag_adjusty); screentosphere(dx,dy,ath,atv); if(onDrag!==null, onDrag() ); delayedcall(0,dragging()); , if(onDragEnd!==null, onDragEnd() ); );"
+		ondown="spheretoscreen(ath,atv,hotspotcenterx,hotspotcentery); sub(drag_adjustx,mouse.stagex,hotspotcenterx); sub(drag_adjusty,mouse.stagey,hotspotcentery); if(onDragStart!==null, onDragStart() ); dragging();"
+	/>
+
+	<!-- Include autotour player and image/video hotspots with styles -->
+	<include url="%SWFPATH%/robertitor/autotour_player.xml"/>
+
+	<!-- customize skin settings: maps, gyro, thumbnails, tooltips, layout, design, ... -->
+	<skin_settings maps="false"
+	               maps_type="bing"
+	               maps_bing_api_key=""
+	               maps_zoombuttons="false"
+	               gyro="true"
+	               littleplanetintro="false"
+	               title="false"
+	               thumbs="true"
+	               thumbs_width="120" thumbs_height="80" thumbs_padding="10" thumbs_crop="0|40|240|160"
+	               thumbs_opened="false"
+	               thumbs_text="false"
+	               thumbs_dragging="true"
+	               thumbs_onhoverscrolling="false"
+	               thumbs_scrollbuttons="false"
+	               thumbs_scrollindicator="false"
+	               thumbs_loop="false"
+	               tooltips_buttons="false"
+	               tooltips_thumbs="false"
+	               tooltips_hotspots="true"
+	               tooltips_mapspots="false"
+	               deeplinking="false"
+	               loadscene_flags="KEEPVIEW"
+	               loadscene_blend="OPENBLEND(0.5, 0.0, 0.75, 0.05, linear)"
+	               loadscene_blend_prev="SLIDEBLEND(0.5, 180, 0.75, linear)"
+	               loadscene_blend_next="SLIDEBLEND(0.5,   0, 0.75, linear)"
+	               loadingtext="loading..."
+	               layout_width="100%"
+	               layout_maxwidth.normal="900"
+	               layout_maxwidth.mobile=""
+	               controlbar_width.normal="-44"
+	               controlbar_width.mobile="100%"
+	               controlbar_height.normal="38"
+	               controlbar_height.mobile="34"
+	               controlbar_offset.normal="22"
+	               controlbar_offset.mobile="0"
+	               controlbar_offset_closed="-40"
+	               controlbar_overlap.normal="7"
+	               controlbar_overlap.mobile="2"
+	               design_skin_images="vtourskin.png"
+	               design_bgcolor="0x000000"
+	               design_bgalpha="0.5"
+	               design_bgborder="0 0xFFFFFF 1.0"
+	               design_bgroundedge.normal="9"
+	               design_bgroundedge.mobile="1"
+	               design_bgshadow="0 0 9 0xFFFFFF 0.5"
+	               design_thumbborder_bgborder="4 0xFFFFFF 1.0"
+	               design_thumbborder_padding="2"
+	               design_thumbborder_bgroundedge="5"
+	               design_text_css="color:#FFFFFF; font-family:Arial; font-weight:bold;"
+	               design_text_shadow="1"
+	               />
+
+	<!--
+	    For an alternative skin design either change the <skin_settings> values
+	    from above or optionally include one of the predefined designs from below.
+	    Either by removing the 'xml-if-check' from the particular <include> element
+	    or by adding e.g. initvar:{design:'flat_light'} to the embedpano() call in
+	    the html file:
+	-->
+	<!-- <include url="%SWFPATH%/skin/vtourskin_design_glass.xml"       if="design === 'glass'"       /> -->
+	<include url="%SWFPATH%/skin/vtourskin_design_flat.xml"        if="design === 'flat'"        />
+	<!-- <include url="%SWFPATH%/skin/vtourskin_design_flat_light.xml"  if="design === 'flat_light'"  />
+	<include url="%SWFPATH%/skin/vtourskin_design_ultra_light.xml" if="design === 'ultra_light'" />
+	<include url="%SWFPATH%/skin/vtourskin_design_117.xml"         if="design === '117'"         /> -->
+
+
+	<!-- startup action - load the first pano/scene -->
+	<action name="startup" autorun="onstart">
+		if(startscene === null OR !scene[get(startscene)], copy(startscene,scene[0].name); );
+		loadscene(get(startscene), null, MERGE);
+		if(startactions !== null, startactions() );
+	</action>
+
+
+
+	<scene name="scene_02" title="Entrance 02" onstart="" thumburl="panos/02.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view fisheye="0.5" stereographic="1.0" pannini="1.0" hlookat="63.101" vlookat="-0.348" fovtype="MFOV" fov="105.000" maxpixelzoom="2.0" fovmin="70" fovmax="105" limitview="auto" />
+
+		<preview url="panos/02.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/02.tiles/pano_%s.jpg" />
+			<mobile>
+				<cube url="panos/02.tiles/mobile_%s.jpg" />
+			</mobile>
+		</image>
+
+		<!-- place your scene hotspots here -->
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="55.992" atv="39.861" linkedscene="scene_04" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="60.858" atv="18.653" linkedscene="scene_08" />
+		<hotspot name="spot3" style="skin_hotspotstyle" ath="8.328" atv="4.623" linkedscene="scene_06" />
+		<hotspot name="spot4" style="skin_hotspotstyle" ath="144.817" atv="30.111" linkedscene="scene_10" />
+		<hotspot name="spot5" style="skin_hotspotstyle" ath="-40.099" atv="23.479" linkedscene="scene_65" />
+		<hotspot name="spot6" style="skin_hotspotstyle" ath="-154.382" atv="37.904" linkedscene="scene_52" />
+		<hotspot name="spot7" style="skin_hotspotstyle" ath="-161.831" atv="20.352" linkedscene="scene_51" />
+		<hotspot name="spot8" style="skin_hotspotstyle" ath="-172.059" atv="13.684" linkedscene="scene_43" />
+		<hotspot name="spot9" style="skin_hotspotstyle" ath="-35.926" atv="10.750" linkedscene="scene_62" />
+		<hotspot name="spot10" style="skin_hotspotstyle" ath="-49.890" atv="11.342" linkedscene="scene_61" />
+		<hotspot name="spot11" style="skin_hotspotstyle" ath="-175.863" atv="10.936" linkedscene="scene_45" />
+
+	</scene>
+
+	<scene name="scene_04" title="Living Room 04" onstart="" thumburl="panos/04.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view fisheye="0.5" stereographic="1.0" pannini="1.0" hlookat="0" vlookat="0" fovtype="MFOV" fov="105" maxpixelzoom="2.0" fovmin="70" fovmax="105" limitview="auto" />
+
+		<preview url="panos/04.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/04.tiles/pano_%s.jpg" />
+			<mobile>
+				<cube url="panos/04.tiles/mobile_%s.jpg" />
+			</mobile>
+		</image>
+
+		<!-- place your scene hotspots here -->
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="-125.114" atv="42.682" linkedscene="scene_02" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="179.384" atv="24.383" linkedscene="scene_10" />
+		<hotspot name="spot3" style="skin_hotspotstyle" ath="-135.048" atv="25.512" linkedscene="scene_52" />
+		<hotspot name="spot4" style="skin_hotspotstyle" ath="-146.364" atv="17.640" linkedscene="scene_51" />
+		<hotspot name="spot5" style="skin_hotspotstyle" ath="-25.087" atv="14.803" linkedscene="scene_06" />
+		<hotspot name="spot6" style="skin_hotspotstyle" ath="58.631" atv="32.324" linkedscene="scene_08" />
+
+	</scene>
+
+	<scene name="scene_06" title="Living Room 06" onstart="" thumburl="panos/06.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view fisheye="0.5" stereographic="1.0" pannini="1.0" hlookat="0" vlookat="0" fovtype="MFOV" fov="105" maxpixelzoom="2.0" fovmin="70" fovmax="105" limitview="auto" />
+
+		<preview url="panos/06.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/06.tiles/pano_%s.jpg" />
+			<mobile>
+				<cube url="panos/06.tiles/mobile_%s.jpg" />
+			</mobile>
+		</image>
+
+		<!-- place your scene hotspots here -->
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="119.021" atv="20.803" linkedscene="scene_08" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="153.760" atv="20.084" linkedscene="scene_04" />
+		<hotspot name="spot3" style="skin_hotspotstyle" ath="163.221" atv="12.976" linkedscene="scene_10" />
+		<hotspot name="spot4" style="skin_hotspotstyle" ath="173.298" atv="18.327" linkedscene="scene_02" />
+		<hotspot name="spot5" style="skin_hotspotstyle" ath="-97.215" atv="9.681" linkedscene="scene_60" />
+		<hotspot name="spot6" style="skin_hotspotstyle" ath="-67.889" atv="13.614" linkedscene="scene_61" />
+		<hotspot name="spot7" style="skin_hotspotstyle" ath="-48.943" atv="13.992" linkedscene="scene_62" />
+
+	</scene>
+
+</krpano>

@@ -1,0 +1,50 @@
+<krpano>
+
+	<!-- hotspots_tooltip_enabled -> If video/image hotspots tooltips to be displayed set to true and also adapt file hotspot_tooltip_data.xml accordingly -->
+	<!-- use_mp4_video_format_only ->  When set to true video file name is only name.mp4 If set to false than it is name.mp4|name.webm (default krpano). -->
+	<hotspots_settings
+						hotspots_tooltip_enabled			="true"
+						use_mp4_video_format_only			="false"
+		/>
+
+	<autotour_settings
+						autotour_enabled							="false"
+						loop_at_end										="true"
+						start_autotour_button					="true"
+						idle_time											="5"
+						acceleration									="100"
+						breakspeed										="100"
+						maxspeed											="150"
+						pause_on_point_view						="800"
+						pause_on_load_scene						="800"
+						pause_on_open_image						="2000"
+						pause_on_close_image					="2000"
+						display_autotour_msg					="false"
+						autotour_started_text					="Autotour started"
+						autotour_preview_text					="Autotour preview started..."
+						allscene_fov									="120"
+						allscene_fovmin								="30"
+						show_image_action							="magflyouts_image_show"
+						hide_image_action							="magflyouts_image_hide"
+						hotspots_hiden_on_autotour		="true"
+						gui_hiden_on_autotour					="true"
+	 />
+
+	<!--
+	acceleration,	breakspeed,	maxspeed -> used to make view change with lookto(ath, atv, fov, smooth(accel,break,maxspeed)) -> Reference: http://krpano.com/docu/actions/#lookto
+	accel = acceleration in degrees/second (default=720)
+	break = negative acceleration in degrees/second2 (default=-720)
+	maxspeed = maximum moving speed in degrees/second (default=720)
+	default settings: Acceleration 10, breakspeed 10, maxspeed 50. -->
+
+	<!-- use autotour without hotspots (hotspots_hiden_on_autotour="true")
+    	 start autotour with button play (start_autotour_button="true"). -->
+
+	<robertitor_settings
+						image_hotspot_style="pichotspot"
+						scene_hotspot_style="skin_hotspotstyle"
+						video_hotspot_style="videohotspot"
+	/>
+
+
+</krpano>

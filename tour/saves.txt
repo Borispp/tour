@@ -1,0 +1,91 @@
+
+	<plugin name="hotspotseditor"
+		url="../plugins/hotspotseditor.js"
+		align="center" y="-150"
+		mode="testing"
+		value="200.0"
+		onclick="dosomething('hello', 'plugin');"
+		/>
+
+    onclick="getPosition();"
+
+
+    <action name="mousedownEvent">
+      moveto(100.0,5,linear(10));
+    </action>
+
+
+    <action name="mousedownEvent" type="Javascript"><![CDATA[
+      moveto(100.0,5,linear(10));
+      console.log('mousedownEvent');
+    ]]></action>
+
+
+    console.log(krpano.get('mouseath'));
+    console.log(krpano.get('mouseatv'));
+
+
+    <hotspot
+      name="spot11"
+      type="image"
+      url="panos/02.tiles/thumb.jpg"
+      style="skin_hotspotstyle"
+      ath="0" atv="0"
+      linkedscene="scene_02"
+      width="128" height="128"
+      alpha="1"
+    />
+
+
+    $('#pano').on('mousedown', function (e) {
+      var krpano = document.getElementById("krpanoSWFObject");
+
+      $body.on('mouseup mousemove', function handler(e) {
+        if (e.type === 'mouseup') {
+          var c = 4;
+          // Click
+          console.log(krpano);
+          krpano.call("getPosition();")
+        } else {
+          // Drag
+        }
+        $body.off('mouseup mousemove', handler);
+      });
+    });
+
+
+
+    function showmouseinfo() {
+      var krpano = document.getElementById("krpanoSWFObject");
+      if (krpano && krpano.get) { krpano.call("rotateScene(0, 0, 100)"); }
+    }
+
+    $('.show_coord').on('click', function () {
+      showmouseinfo();
+    });
+
+
+
+<krpano><include url="/v1.0_1.19-pr5/skin/vtourskin.xml" /> <style name="skin_drag" scale="0.35" edge="center" distorted="true" border="true" bordercolor="0x000000" borderalpha="1.0" borderwidth="1.0" roundedge="1" tooltip="" alpha="0.8" width="120" height="120" onover="tween(scale,0.44);tween(alpha,1);" onout="tween(scale,0.35);tween(alpha,1);" onclick="if(linkedscene, set(enabled,false); skin_hidetooltips(); tween(alpha, 0.0, 0.3, default, loadscene(get(linkedscene),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend)); skin_updatescroll(); ); );" onloaded="if(linkedscene AND skin_settings.tooltips_hotspots, copy(tooltip,scene[get(linkedscene)].title); loadstyle(skin_tooltips); );" dragging="if(pressed, sub(dx,mouse.stagex,drag_adjustx); sub(dy,mouse.stagey,drag_adjusty); screentosphere(dx,dy,ath,atv); if(onDrag!==null, onDrag() ); delayedcall(0,dragging()); , if(onDragEnd!==null, onDragEnd() ); );" ondown="spheretoscreen(ath,atv,hotspotcenterx,hotspotcentery); sub(drag_adjustx,mouse.stagex,hotspotcenterx); sub(drag_adjusty,mouse.stagey,hotspotcentery); if(onDragStart!==null, onDragStart() ); dragging();" /><action name="startup" autorun="onstart"> if(startscene === null OR !scene[get(startscene)], copy(startscene,scene[0] name); ); loadscene(scene_02, null, MERGE); if(startactions !== null, startactions() );</action><scene name="scene_02"><preview url="panos/02.tiles/preview.jpg" /><image><cube url="panos/02.tiles/pano_%s.jpg" /><mobile><cube url="panos/02.tiles/mobile_%s.jpg" /></mobile></image></scene></krpano>
+<krpano><include url='/v1.0_1.19-pr5/skin/vtourskin.xml' /> <style name='skin_drag' scale='0.35' edge='center' distorted='true' border='true' bordercolor='0x000000' borderalpha='1.0' borderwidth='1.0' roundedge='1' tooltip='' alpha='0.8' width='120' height='120' onover='tween(scale,0.44);tween(alpha,1);' onout='tween(scale,0.35);tween(alpha,1);' onclick='if(linkedscene, set(enabled,false); skin_hidetooltips(); tween(alpha, 0.0, 0.3, default, loadscene(get(linkedscene),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend)); skin_updatescroll(); ); );' onloaded='if(linkedscene AND skin_settings.tooltips_hotspots, copy(tooltip,scene[get(linkedscene)].title); loadstyle(skin_tooltips); );' dragging='if(pressed, sub(dx,mouse.stagex,drag_adjustx); sub(dy,mouse.stagey,drag_adjusty); screentosphere(dx,dy,ath,atv); if(onDrag!==null, onDrag() ); delayedcall(0,dragging()); , if(onDragEnd!==null, onDragEnd() ); );' ondown='spheretoscreen(ath,atv,hotspotcenterx,hotspotcentery); sub(drag_adjustx,mouse.stagex,hotspotcenterx); sub(drag_adjusty,mouse.stagey,hotspotcentery); if(onDragStart!==null, onDragStart() ); dragging();'/><action name='startup' autorun='onstart'>if(startscene === null OR !scene[get(startscene)], copy(startscene,scene[0] name); ); loadscene(scene_02, null, MERGE); if(startactions !== null, startactions() );</action><scene name='scene_02'><preview url='panos/02.tiles/preview.jpg'/><image><cube url='panos/02.tiles/pano_%s.jpg'/><mobile><cube url='panos/02.tiles/mobile_%s.jpg'/></mobile></image></scene></krpano>
+
+
+// embedpano({swf:"../v1.0_1.19-pr5/tour.swf", id:"krpanoSWFObject", xml:"tour.xml", target:"pano", html5:"prefer", initvars:{design:"flat", facebook: "https://api.list3d.co/catalog/tours/045765403113/tour.html"}, passQueryParameters:true});
+
+// var xmlString = '<krpano><include url="/v1.0_1.19-pr5/skin/vtourskin.xml" /> <style name="skin_drag" scale="0.35" edge="center" distorted="true" border="true" bordercolor="0x000000" borderalpha="1.0" borderwidth="1.0" roundedge="1" tooltip="" alpha="0.8" width="120" height="120" onover="tween(scale,0.44);tween(alpha,1);" onout="tween(scale,0.35);tween(alpha,1);" onclick="if(linkedscene, set(enabled,false); skin_hidetooltips(); tween(alpha, 0.0, 0.3, default, loadscene(get(linkedscene),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend)); skin_updatescroll(); ); );" onloaded="if(linkedscene AND skin_settings.tooltips_hotspots, copy(tooltip,scene[get(linkedscene)].title); loadstyle(skin_tooltips); );" dragging="if(pressed, sub(dx,mouse.stagex,drag_adjustx); sub(dy,mouse.stagey,drag_adjusty); screentosphere(dx,dy,ath,atv); if(onDrag!==null, onDrag() ); delayedcall(0,dragging()); , if(onDragEnd!==null, onDragEnd() ); );" ondown="spheretoscreen(ath,atv,hotspotcenterx,hotspotcentery); sub(drag_adjustx,mouse.stagex,hotspotcenterx); sub(drag_adjusty,mouse.stagey,hotspotcentery); if(onDragStart!==null, onDragStart() ); dragging();" /><action name="startup" autorun="onstart"> if(startscene === null OR !scene[get(startscene)], copy(startscene,scene[0] name); ); loadscene(scene_02, null, MERGE); if(startactions !== null, startactions() );</action><scene name="scene_02"><preview url="panos/02.tiles/preview.jpg" /><image><cube url="panos/02.tiles/pano_%s.jpg" /><mobile><cube url="panos/02.tiles/mobile_%s.jpg" /></mobile></image></scene></krpano>';
+
+
+var krpano = document.getElementById("krpanoSWFObject");
+var mouse = krpano.get("mouse");
+var pt = krpano.screentosphere(mouse.x, mouse.y);
+
+
+console.log(pt);
+
+http://krpano.com/forum/wbb/index.php?page=Thread&threadID=9949
+
+
+
+	<li><a data-scene="scene_02"><img src="http://fw/tour/panos/02.tiles/thumb.jpg" alt=""></a></li>
+	<li><a data-scene="scene_06"><img src="http://fw/tour/panos/06.tiles/thumb.jpg" alt=""></a></li>
+	<li><a data-scene="scene_04"><img src="http://fw/tour/panos/04.tiles/thumb.jpg" alt=""></a></li>

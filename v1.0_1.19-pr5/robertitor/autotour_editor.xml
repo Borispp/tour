@@ -1,0 +1,194 @@
+<krpano>
+
+
+	<action name="preview_autotour_data">		
+		for(set(i,1), i LE autotour_preview.step.count, inc(i), 														
+				txtadd(active_action,'action_',get(i));				
+			);		
+	</action>
+	
+<action name="preview_hotspot_data">				
+		set(autorotate_hotspots_in_memory,0);
+		for(set(i,0), i LT hotspot.count, inc(i), 										
+			if(hotspot[get(i)].style EQ 'autotour_hs_style',
+					inc(autorotate_hotspots_in_memory);
+				);				
+			);	
+		
+		set(start_action_nr,1);
+		set(current_action_nr,1);
+		for(set(i,1), i LE autorotate_hotspots_in_memory, inc(i), 														
+				txtadd(found_autorotate_hotspot_name,'autotorate_hs_',get(i));				
+				add_autorotate_definiton_action(get(found_autorotate_hotspot_name));				
+			);						
+	</action>
+	
+	
+	<action name="add_autorotate_definiton_action">		
+		showlog(true);
+		if(hotspot[%1].hs_type EQ 'autotour_start_scene_point',			
+			
+			set_active_action();			
+			txtadd(actions2add,'load_new_scene(',get(hotspot[%1].linkedscene),');');			
+			set(scene2add,get(hotspot[%1].scene));						
+			set(autotour_preview.step[get(active_action)].action,get(actions2add));
+			set(autotour_preview.step[get(active_action)].scene,get(scene2add));						
+			inc(current_action_nr);
+		);
+
+		set(prev_action, get(autotour_preview.step[get(active_action)].action));
+		subtxt(ident,prev_action,0,14); 
+
+		if(hotspot[%1].hs_type EQ 'autotour_regular_point',
+			if(ident EQ 'load_new_scene', 
+				txtreplace(prev_action, ');', ''); 
+				txtadd(actions2add,get(prev_action),',',get(hotspot[%1].ath),',',get(hotspot[%1].atv),',get(autotour_settings.allscene_fov))');
+				
+				set(scene2add,get(hotspot[%1].scene));									
+				set(autotour_preview.step[get(active_action)].action,get(actions2add));
+				set(autotour_preview.step[get(active_action)].scene,get(scene2add));				
+			
+				set_active_action();						
+				txtadd(actions2add,'lookto(',get(hotspot[%1].ath),',',get(hotspot[%1].atv),',',get(hotspot[%1].fov),',smooth(get(autotour_settings.acceleration),get(autotour_settings.breakspeed),get(autotour_settings.maxspeed)))');			
+				set(scene2add,get(hotspot[%1].scene));									
+				set(autotour_preview.step[get(active_action)].action,get(actions2add));
+				set(autotour_preview.step[get(active_action)].scene,get(scene2add));				
+				inc(current_action_nr);
+			
+				set_active_action();			
+				set(actions2add,'pause_action(get(autotour_settings.pause_on_load_scene));');			
+				set(scene2add,get(hotspot[%1].scene));			
+				set(autotour_preview.step[get(active_action)].action,get(actions2add));
+				set(autotour_preview.step[get(active_action)].scene,get(scene2add));						
+				inc(current_action_nr);
+			, 
+				set_active_action();
+				txtadd(actions2add,'lookto(',get(hotspot[%1].ath),',',get(hotspot[%1].atv),',get(autotour_settings.allscene_fov),smooth(get(autotour_settings.acceleration),get(autotour_settings.breakspeed),get(autotour_settings.maxspeed)))');
+				set(scene2add,get(hotspot[%1].scene));									
+				set(autotour_preview.step[get(active_action)].action,get(actions2add));
+				set(autotour_preview.step[get(active_action)].scene,get(scene2add));
+				inc(current_action_nr);
+			
+				set_active_action();						
+				txtadd(actions2add,'lookto(',get(hotspot[%1].ath),',',get(hotspot[%1].atv),',',get(hotspot[%1].fov),',smooth(get(autotour_settings.acceleration),get(autotour_settings.breakspeed),get(autotour_settings.maxspeed)))');			
+				set(scene2add,get(hotspot[%1].scene));									
+				set(autotour_preview.step[get(active_action)].action,get(actions2add));
+				set(autotour_preview.step[get(active_action)].scene,get(scene2add));				
+				inc(current_action_nr);
+			
+				set_active_action();			
+				set(actions2add,'pause_action(get(autotour_settings.pause_on_point_view));');			
+				set(scene2add,get(hotspot[%1].scene));			
+				set(autotour_preview.step[get(active_action)].action,get(actions2add));
+				set(autotour_preview.step[get(active_action)].scene,get(scene2add));						
+				inc(current_action_nr);				
+			); 
+			
+			set_active_action();						
+			txtadd(actions2add,'lookto(',get(hotspot[%1].ath),',',get(hotspot[%1].atv),',get(autotour_settings.allscene_fov),smooth(get(autotour_settings.acceleration),get(autotour_settings.breakspeed),get(autotour_settings.maxspeed)))');
+			set(scene2add,get(hotspot[%1].scene));									
+			set(autotour_preview.step[get(active_action)].action,get(actions2add));
+			set(autotour_preview.step[get(active_action)].scene,get(scene2add));
+			inc(current_action_nr);
+		);
+		
+		if(hotspot[%1].hs_type EQ 'autotour_image_point',			
+			if(ident EQ 'load_new_scene', 
+			
+				txtreplace(prev_action, ');', ''); 
+				txtadd(actions2add,get(prev_action),',',get(hotspot[%1].ath),',',get(hotspot[%1].atv),',get(autotour_settings.allscene_fov))');				
+				set(scene2add,get(hotspot[%1].scene));									
+				set(autotour_preview.step[get(active_action)].action,get(actions2add));
+				set(autotour_preview.step[get(active_action)].scene,get(scene2add));				
+			, 
+				set_active_action();			
+				txtadd(actions2add,'lookto(',get(hotspot[%1].ath),',',get(hotspot[%1].atv),',get(autotour_settings.allscene_fov),smooth(get(autotour_settings.acceleration),get(autotour_settings.breakspeed),get(autotour_settings.maxspeed)))');
+				set(scene2add,get(hotspot[%1].scene));									
+				set(autotour_preview.step[get(active_action)].action,get(actions2add));
+				set(autotour_preview.step[get(active_action)].scene,get(scene2add));
+				inc(current_action_nr);
+			
+			); 			
+
+			set_active_action();						
+			txtadd(actions2add,'lookto(',get(hotspot[%1].ath),',',get(hotspot[%1].atv),',',get(hotspot[%1].fov),',smooth(get(autotour_settings.acceleration),get(autotour_settings.breakspeed),get(autotour_settings.maxspeed)))');
+			set(scene2add,get(hotspot[%1].scene));									
+			set(autotour_preview.step[get(active_action)].action,get(actions2add));
+			set(autotour_preview.step[get(active_action)].scene,get(scene2add));
+			inc(current_action_nr);
+			
+			set_active_action();						
+			txtadd(actions2add,get(autotour_settings.show_image_action),'(',get(hotspot[%1].pic),');');
+			txtadd(actions2add,get(actions2add),'pause_action(get(autotour_settings.pause_on_open_image));');
+			txtadd(actions2add,get(actions2add),get(autotour_settings.hide_image_action),'(',get(hotspot[%1].pic),');');
+			set(scene2add,get(hotspot[%1].scene));									
+			set(autotour_preview.step[get(active_action)].action,get(actions2add));
+			set(autotour_preview.step[get(active_action)].scene,get(scene2add));
+			inc(current_action_nr);
+						
+			set_active_action();			
+			set(actions2add,'pause_action(get(autotour_settings.pause_on_close_image));');			
+			set(scene2add,get(hotspot[%1].scene));			
+			set(autotour_preview.step[get(active_action)].action,get(actions2add));
+			set(autotour_preview.step[get(active_action)].scene,get(scene2add));						
+			inc(current_action_nr);
+			
+			set_active_action();					
+			txtadd(actions2add,'lookto(',get(hotspot[%1].ath),',',get(hotspot[%1].atv),',get(autotour_settings.allscene_fov),smooth(get(autotour_settings.acceleration),get(autotour_settings.breakspeed),get(autotour_settings.maxspeed)))');
+			set(scene2add,get(hotspot[%1].scene));									
+			set(autotour_preview.step[get(active_action)].action,get(actions2add));
+			set(autotour_preview.step[get(active_action)].scene,get(scene2add));
+			inc(current_action_nr);
+			
+		);
+		
+		if(hotspot[%1].hs_type EQ 'autotour_load_new_scene_point',			
+			
+			if(ident EQ 'load_new_scene', 
+			
+				txtreplace(prev_action, ');', ''); 
+				txtadd(actions2add,get(prev_action),',',get(hotspot[%1].ath),',',get(hotspot[%1].atv),',get(autotour_settings.allscene_fov))');				
+				set(scene2add,get(hotspot[%1].scene));									
+				set(autotour_preview.step[get(active_action)].action,get(actions2add));
+				set(autotour_preview.step[get(active_action)].scene,get(scene2add));				
+			, 
+				set_active_action();			
+				txtadd(actions2add,'lookto(',get(hotspot[%1].ath),',',get(hotspot[%1].atv),',get(autotour_settings.allscene_fov),smooth(get(autotour_settings.acceleration),get(autotour_settings.breakspeed),get(autotour_settings.maxspeed)))');
+				set(scene2add,get(hotspot[%1].scene));									
+				set(autotour_preview.step[get(active_action)].action,get(actions2add));
+				set(autotour_preview.step[get(active_action)].scene,get(scene2add));
+				inc(current_action_nr);
+			
+			);
+
+			set_active_action();						
+			txtadd(actions2add,'lookto(',get(hotspot[%1].ath),',',get(hotspot[%1].atv),',',get(hotspot[%1].fov),',smooth(get(autotour_settings.acceleration),get(autotour_settings.breakspeed),get(autotour_settings.maxspeed)))');
+			set(scene2add,get(hotspot[%1].scene));									
+			set(autotour_preview.step[get(active_action)].action,get(actions2add));
+			set(autotour_preview.step[get(active_action)].scene,get(scene2add));
+			inc(current_action_nr);			
+			
+			set_active_action();			
+			txtadd(actions2add,'load_new_scene(',get(hotspot[%1].linkedscene),');');			
+			set(scene2add,get(hotspot[%1].scene));						
+			set(autotour_preview.step[get(active_action)].action,get(actions2add));
+			set(autotour_preview.step[get(active_action)].scene,get(scene2add));						
+			inc(current_action_nr);			
+		);
+		trace('added action = ', get(autotour_preview.step[get(active_action)].action)); 
+	</action>
+	
+	<action name="empty_autorotate_preview_steps_in_memory">
+				
+		<!--Delete if there is something to delete in memory for previewing autorotation-->
+		if(autotour_preview.step.count GE 1,		
+			autotour_preview.removearray(step);			
+		);
+		preview_autotour_data();
+	</action>
+	
+	<action name="set_active_action">
+			txtadd(active_action,'action_',get(current_action_nr));			
+	</action>
+
+</krpano>

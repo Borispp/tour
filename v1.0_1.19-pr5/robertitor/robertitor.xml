@@ -1,0 +1,523 @@
+<krpano>
+	
+	
+	
+	<include url="menu.xml"/>
+ 	<include url="autotour_editor.xml"/>
+	
+	<include url="draghotspots.xml" />
+	<include url="vertical_scene.xml" />
+	
+	<action name="robertitor_loaded" autorun="preinit">
+		set(robertitor_loaded,true);		
+	</action>
+		
+	<layer name="hit_button" keep="true" url="hit.png" visible="true" align="center" edge="center" x="0" y="0" scale="0.5" enabled="false"/>
+	
+	<action name="calljs_open_image">				
+		set(originator,%1);
+			
+		<!-- call to js to intiate the open procedures -->
+		js(handleSelectImage('handleSelectImageCallback'));	
+		
+	</action>
+	
+	<action name="handleSelectImageCallback">		
+				
+		<!--checks before creating hotspot-->		
+		if(%1 EQ null,		
+			if(originator EQ 'image_hotspot',create_new_image_hotspot(%2);unmask_menu(1););	
+			if(originator EQ 'autotour_image_point',add_autorotate_hotspots_step(autotour_image_point,%2,%3));				
+			);
+	</action>
+
+	<action name="create_new_image_hotspot">		
+		
+		<!--check if already exist to be done here or in js-->
+		addhotspot(%1);
+		
+		copy(rounded_ath,view.hlookat); roundval(rounded_ath,3);
+		copy(rounded_atv,view.vlookat); roundval(rounded_atv,3);
+					
+		copy(hotspot[%1].ath,rounded_ath);
+		copy(hotspot[%1].atv,rounded_atv);
+							
+		set(hotspot[%1].pic,%1);
+
+		set(hotspot[%1].style,get(robertitor_settings.image_hotspot_style));
+		hotspot[%1].loadstyle(get(robertitor_settings.image_hotspot_style));
+		
+		delayedcall(0.2,
+		set(hotspot[%1].visible,true);		
+		);
+		
+	</action>
+
+		
+	<!--*******************************-->
+	<!-- Add Linked scene 						 -->
+	<!--*******************************-->
+	<action name="add_link2scene">				
+	
+		set(originator,link2scene);	
+		linkedscene_skin_showthumbs(true);show_button(submenu_top_1_2);
+	</action>
+	
+	<action name="add_link2scene_from_linkedscene_chooser">	
+		<!-- Find how many linkedscene hotspots is already in memory -->
+		set(linkedscene_hotspots_in_memory,0);
+		for(set(i,0), i LT hotspot.count, inc(i), 										
+			if(hotspot[get(i)].style EQ robertitor_settings.scene_hotspot_style,
+				inc(linkedscene_hotspots_in_memory););
+			);		
+		
+		copy(newscenenumber,linkedscene_hotspots_in_memory);
+		inc(newscenenumber);
+		txtadd(new_hotspot_name,'spot',get(newscenenumber));
+						
+		addhotspot(get(new_hotspot_name));
+		
+		copy(rounded_ath,view.hlookat); roundval(rounded_ath,3);
+		copy(rounded_atv,view.vlookat); roundval(rounded_atv,3);
+					
+		copy(hotspot[get(new_hotspot_name)].ath,rounded_ath);
+		copy(hotspot[get(new_hotspot_name)].atv,rounded_atv);
+		
+				
+		set(hotspot[get(new_hotspot_name)].linkedscene,%1);
+		
+		
+		set(hotspot[get(new_hotspot_name)].style,get(robertitor_settings.scene_hotspot_style));
+		hotspot[get(new_hotspot_name)].loadstyle(get(robertitor_settings.scene_hotspot_style));
+		
+		delayedcall(0.2,
+			set(hotspot[get(new_hotspot_name)].visible,true);		
+			);
+		
+	</action>
+
+
+
+	<!--*******************************-->
+	<!-- ADD VIDEO HOTSPOT						 -->
+	<!--*******************************-->
+	
+	<action name="calljs_video_hotspot">				
+		set(originator,%1);		
+		js(handleSelectVideo('handleSelectVideoCallback')); 		
+	</action>
+	
+	<action name="handleSelectVideoCallback">						
+		if('%3' == 'mp4',  
+			if(originator EQ 'video_hotspot',create_new_video_hotspot(%2); );
+		);
+		
+		unmask_menu(1);
+	</action>
+	
+
+	<action name="create_new_video_hotspot">								
+		addhotspot(%1);
+		
+		copy(rounded_ath,view.hlookat); roundval(rounded_ath,3);
+		copy(rounded_atv,view.vlookat); roundval(rounded_atv,3);
+					
+		copy(hotspot[%1].ath,rounded_ath);
+		copy(hotspot[%1].atv,rounded_atv);
+					
+		
+		set(hotspot[%1].style,get(robertitor_settings.video_hotspot_style));
+		hotspot[%1].loadstyle(get(robertitor_settings.video_hotspot_style));
+				
+		delayedcall(0.2,
+			set(hotspot[%1].visible,true);			
+			);
+	</action>
+
+	<!--*******************************-->
+	<!-- Delete hotspot 							 -->
+	<!--*******************************-->	
+	<action name="delete_hotspots">		
+		
+		backup_hotspots_attributes();
+		delete_hotspots_remove_onclick_down();
+		assign_hotspots_ondown2_confirm_box();
+		
+		show_show_info(Select hotspot to delete);				
+		
+	</action>
+
+	<!--*******************************-->
+	<!-- Autotour 										 -->
+	<!--*******************************-->	
+	
+	<action name="add_autotour_loadscene_point">				
+		set(originator,autotour_link);
+		linkedscene_skin_showthumbs(true);		
+	</action>
+	
+	
+	<action name="add_autorotate_startscene_step">								
+		set(originator,%1);		
+		linkedscene_skin_showthumbs(true);
+		set(new_point,true);
+		
+	</action>
+	
+	<action name="add_autorotate_image_step">				
+
+		calljs_open_image();
+		
+		set(originator,autotour_image_point);
+		
+		set(new_point,true);
+	</action>
+	
+	<!--*******************************-->
+	<!-- Scene load										 -->
+	<!--*******************************-->	
+	
+	<action name="normal_loadscene_thumb_select">				
+
+		set(originator,gotoscene);
+		linkedscene_skin_showthumbs(true);
+		
+	</action>
+
+
+
+
+	<action name="add_autorotate_hotspots_step">
+		
+		<!--In case user is currently in other room than set by start autotourscene than we need to load this scene first-->
+		
+		if('%1' == 'autotour_start_scene',	
+			if(xml.scene EQ '%2',,			
+			loadscene(%2,null,MERGE,BLEND(1)); 
+			);
+		);
+		
+		set(autorotate_hotspots_in_memory,0);
+		for(set(i,0), i LT hotspot.count, inc(i), 										
+			if(hotspot[get(i)].style EQ 'autotour_hs_style',
+				inc(autorotate_hotspots_in_memory););
+			);		
+		
+		copy(newautototatehsnumber,autorotate_hotspots_in_memory);
+		inc(newautototatehsnumber);
+		txtadd(new_autorotate_hotspot_name,'autotorate_hs_',get(newautototatehsnumber));		
+		
+		addhotspot(get(new_autorotate_hotspot_name));
+		
+			copy(rounded_ath,view.hlookat); roundval(rounded_ath,3);
+			copy(rounded_atv,view.vlookat); roundval(rounded_atv,3);
+			copy(rounded_fov,view.fov); 		roundval(rounded_fov,3);
+			
+			
+			copy(hotspot[get(new_autorotate_hotspot_name)].ath,rounded_ath);
+			copy(hotspot[get(new_autorotate_hotspot_name)].atv,rounded_atv);
+			copy(hotspot[get(new_autorotate_hotspot_name)].fov,rounded_fov);
+		
+		set(hotspot[get(new_autorotate_hotspot_name)].scene,get(scene[get(xml.scene)].index));
+		
+		set(hotspot[get(new_autorotate_hotspot_name)].style,autotour_hs_style);				
+		hotspot[get(new_autorotate_hotspot_name)].loadstyle(autotour_hs_style);								
+		
+		
+		if(autotour_creating_now EQ true, 
+			if('%1' == 'autotour_start_scene',					
+		
+				<!-- Autotour Start point -->			
+				txtadd(loadscene_html_text,get(newautototatehsnumber),' - Start scene: ',get(linkedscene));
+				copy(hotspot[get(new_autorotate_hotspot_name)].zorder,newautototatehsnumber);						
+				copy(hotspot[get(new_autorotate_hotspot_name)].html,loadscene_html_text);						
+				set(hotspot[get(new_autorotate_hotspot_name)].linkedscene,get(linkedscene));
+				set(hotspot[get(new_autorotate_hotspot_name)].hs_type,autotour_start_scene_point);
+		
+				autotour_start_scene_set_show_other_buttons();				
+			);		
+			
+			if('%1' == 'new_point',	
+		
+				<!--regular add new autotour point text - simple number-->			
+				copy(hotspot[get(new_autorotate_hotspot_name)].zorder,newautototatehsnumber);						
+				copy(hotspot[get(new_autorotate_hotspot_name)].html,newautototatehsnumber);			
+				set(hotspot[get(new_autorotate_hotspot_name)].hs_type,autotour_regular_point);		
+		
+			);
+			
+			if('%1' == 'autotour_image_point',	
+				
+				<!--regular add new image autotour point -->							
+				
+				set(loadimage_pic,%2);
+				
+				
+				copy(hotspot[get(new_autorotate_hotspot_name)].pic,loadimage_pic);										
+				txtadd(load_image_text,get(newautototatehsnumber),' - Image: ',get(loadimage_pic));										
+				copy(hotspot[get(new_autorotate_hotspot_name)].zorder,newautototatehsnumber);						
+				copy(hotspot[get(new_autorotate_hotspot_name)].html,load_image_text);						
+				set(hotspot[get(new_autorotate_hotspot_name)].hs_type,autotour_image_point);
+				
+
+			);
+			
+			if('%1' == 'call_from_load_scene',		
+				
+				<!-- Load new scene while creating autotour - add another text in the blue autorotate adding point hotspottype -->
+				
+				txtadd(loadscene_html_text,get(newautototatehsnumber),' - Go to: ',get(linkedscene));
+				
+				copy(hotspot[get(new_autorotate_hotspot_name)].zorder,newautototatehsnumber);						
+				copy(hotspot[get(new_autorotate_hotspot_name)].html,loadscene_html_text);						
+				set(hotspot[get(new_autorotate_hotspot_name)].linkedscene,get(linkedscene));
+				set(hotspot[get(new_autorotate_hotspot_name)].hs_type,autotour_load_new_scene_point);
+				
+								
+				linkedscene_skin_showthumbs(false);
+				
+					
+				show_show_info(Loading new scene in 3 sec.);
+				delayedcall(0.5, looktohotspot(get(new_autorotate_hotspot_name),30,smooth(100,50,20)); );
+				delayedcall(3,loadscene(get(linkedscene),null,MERGE,BLEND(1)); );
+				
+				
+			);
+			
+		);	
+		
+		
+		if('%1' == 'call_from_load_scene' OR '%1' == 'autotour_start_scene' OR '%1' == 'autotour_image_point',		
+			set(hotspot[get(new_autorotate_hotspot_name)].autowidth,true);
+				
+		);				
+	</action>
+	
+	<action name="display_only_this_scene_autorotate_points">
+	
+	for(set(i,0), i LT hotspot.count, inc(i), 											
+		
+		if(hotspot[get(i)].style EQ 'autotour_hs_style',
+	
+			if(hotspot[get(i)].scene EQ scene[get(xml.scene)].index, 
+			
+			set(hotspot[get(i)].visible, true);
+		
+			,
+			set(hotspot[get(i)].visible, false);
+	
+			);
+		);
+		
+	);		
+	</action>
+	
+	<action name="delete_autorotate_hotspots_steps_in_memory">
+				
+		for(set(i,0), i LT hotspot.count, inc(i), 											
+		
+			if(hotspot[get(i)].style EQ 'autotour_hs_style',				
+				delete_this_hotspot(get(hotspot[get(i)].name));
+				dec(i);				
+				wait(0);	
+			);		
+		);
+		
+	
+	</action>
+	
+	<action name="delete_this_hotspot">		
+		removehotspot(%1);
+	</action>
+	
+	
+	<!--*******************************-->
+	<!-- SAVE AUTOTOUR								 -->
+	<!--*******************************-->	
+	<action name="save_autotour2file">
+			
+		<!-- call to js to intiate the save xml procedures for storing autotour data in xml file-->
+		js(handleSaveAutotour(handleSaveAutotourCallback));		
+		
+	</action>
+  
+	<action name="handlesaveautotourcallback">
+			set(dummy_line,true);	
+	</action>
+
+	<action name="delete_added_autotour_points">
+		
+		delete_autorotate_hotspots_steps_in_memory();
+		
+		creating_now(false);
+		
+		empty_autorotate_preview_steps_in_memory();
+	</action>
+
+
+	<action name="delete_added_autotour_points">
+		
+		delete_autorotate_hotspots_steps_in_memory();
+		
+		creating_now(false);
+		
+		empty_autorotate_preview_steps_in_memory();
+	</action>
+
+
+
+	
+	<!--*******************************-->
+	<!-- Save file krpano js interface -->
+	<!--*******************************-->	
+	
+	<action name="calljs_save_hotspots">		
+		<!-- Krpano new style handling workaround. Find all hotspots of style = skin_tooltips as this should be in memory skin_hotspotstyle -->
+		krpano_119_memory_style_fix();
+				
+		<!-- call to js to intiate the save procedures -->		
+		js(handleSaveHotspot(handleSaveHotspotCallback));		
+	</action>
+
+	<action name="krpano_119_memory_style_fix">			
+		<!-- if style is skin_tooltips and has linked scene than this hotspot should be in memory style="skin_hotspotstyle" before saving new xml -->
+		for(set(i,0), i LT hotspot.count, inc(i),	  					
+			if(hotspot[get(i)].linkedscene,if(hotspot[get(i)].style EQ 'skin_tooltips', set(hotspot[get(i)].style,'skin_hotspotstyle');););									
+		);					
+	</action>
+
+
+  <action name="handleSaveHotspotCallback">			
+		set(dummy_line,true);	
+	</action>
+
+	<action name="move_hotspots">
+		<!--backup attributes needed for dragging for later use aftger move session is over-->
+		backup_hotspots_attributes();		
+		
+		mask_menu(1);		
+		show_button(submenu_top_1_5);				
+		
+		set(layer[hotspotinfo].visible,true);	    
+	  <!-- setting ondown call for all hotspots-->
+	  for(set(i,0), i LT hotspot.count, inc(i), 										
+		set(hotspot[get(i)].ondown,draghotspot(););
+		
+		set(hotspot[get(i)].onclick,);	  
+	  
+	  
+	  );  
+	 </action>
+
+	<action name="backup_hotspots_attributes">				
+		
+	  <!-- setting ondown call for all hotspots-->
+	  for(set(i,0), i LT hotspot.count, inc(i), 													
+		
+			if(hotspot[get(i)].ondown, copy(hotspot[get(i)].ondown_backup,hotspot[get(i)].ondown); 	 	);
+			if(hotspot[get(i)].capture, copy(hotspot[get(i)].capture_backup,hotspot[get(i)].capture);	);
+			if(hotspot[get(i)].onclick, copy(hotspot[get(i)].onclick_backup,hotspot[get(i)].onclick);	);		  
+		
+	  );  
+	 </action>
+	
+	<action name="restore_hotspots_attributes">				
+		
+	  <!-- setting ondown call for all hotspots-->
+	  for(set(i,0), i LT hotspot.count, inc(i), 										
+			if(hotspot[get(i)].ondown_backup, 	copy(hotspot[get(i)].ondown,hotspot[get(i)].ondown_backup); 	,set(hotspot[get(i)].ondown,); 	);
+			if(hotspot[get(i)].capture_backup, 	copy(hotspot[get(i)].capture,hotspot[get(i)].capture_backup);	,set(hotspot[get(i)].capture,); );
+			if(hotspot[get(i)].onclick_backup, 	copy(hotspot[get(i)].onclick,hotspot[get(i)].onclick_backup);	,set(hotspot[get(i)].onclick,); );		  		  
+		
+	  );  
+	 </action>
+
+
+	<action name="delete_hotspots_remove_onclick_down">	  
+	  for(set(i,0), i LT hotspot.count, inc(i), 										
+		set(hotspot[get(i)].ondown,draghotspot(););		
+		set(hotspot[get(i)].onclick,);	  
+	  );  
+	 </action>
+
+	<action name="round_hotspots_ath_atv_three_diggits">	  
+	  for(set(i,0), i LT hotspot.count, inc(i), 										
+			roundval(hotspot[get(i)].ath,3);
+			roundval(hotspot[get(i)].atv,3);
+	  );  
+	 </action>
+
+
+	<action name="assign_hotspots_ondown2_confirm_box">	  
+	  for(set(i,0), i LT hotspot.count, inc(i), 										
+		set(hotspot[get(i)].ondown,confirm_delete_box(name););				
+	  );  
+	 </action>
+
+	<action name="confirm_delete_box">	  	  
+		<![CDATA[
+		
+		show_button(submenu_top_1_6_1);
+		show_button(submenu_top_1_6_2);		
+		
+		copy(print_name, hotspot[get(%1)].name);		
+		copy(print_ath, hotspot[get(%1)].ath);
+		copy(print_atv, hotspot[get(%1)].atv);
+		
+		txtadd(layer[show_info].html, '&lt;hotspot name="',get(print_name),'"&nbsp;ath="',get(print_ath),'"&nbsp;atv="',get(print_atv),'"&nbsp;/&gt;');				
+		]]>
+	  
+	 </action>
+	
+	<action name="cancel_hotspot_delete_box">	  	  
+		
+		restore_hotspots_attributes();				
+		hide_button(submenu_top_1_6_1);
+		hide_button(submenu_top_1_6_2);
+		unmask_menu();
+		txtadd(layer[show_info].html,);	hide_show_info();	
+	</action>
+			
+	<action name="confirmed_hotspot_delete_box">	  	  
+		
+		copy(hotspots_2_delete_confirmed, print_name);
+		
+		
+		removehotspot(get(hotspots_2_delete_confirmed));
+		delayedcall(0.2,restore_hotspots_attributes(););
+		hide_button(submenu_top_1_6_1);
+		hide_button(submenu_top_1_6_2);
+		unmask_menu();
+		txtadd(layer[show_info].html,);	hide_show_info();
+	</action>
+
+
+
+
+	<action name="preview_autotour_data">
+		
+		for(set(i,1), i LE autotour_preview.step.count, inc(i), 														
+				txtadd(active_action,'action_',get(i));				
+			);
+		
+	</action>
+
+	
+	<action name="empty_autorotate_preview_steps_in_memory">
+		
+		<!--Delete if there is something to delete in memory for previewing autorotation-->
+		if(autotour_preview.step.count GE 1,	
+			autotour_preview.removearray(step);			
+		);
+
+	</action>
+	
+	<action name="set_active_action">
+			txtadd(active_action,'action_',get(current_action_nr));
+			
+	</action>
+
+
+
+		
+</krpano>

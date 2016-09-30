@@ -1,0 +1,36 @@
+﻿<krpano>
+
+	<!-- disable zooming by shift and control keys (to avoid zooming when using crtl+c or command+c to copy the hotspot xml text) -->
+	<control keycodesin="" keycodesout="" />
+
+	<layer name="hotspotinfo"	keep="true"
+		url="../plugins/textfield.swf" children="false" align="topright" vcenter="true" hcenter="true" visible="false" handcursor="false" roundedge="5" 
+		onloaded="set(css,text-align:center; color:#f37921; font-family:Arial; font-weight:bold; font-size:14px;);" bordercolor="0xFFFFFF" borderwidth="1" borderalpha="1" border="false" background="true" backgroundcolor="0x000000" backgroundalpha="0.5" 
+		html="Drag the hotspots..." css="font-family:Courier;" x="10" y="10" padding="10 15 10 15"
+		/>	
+
+	<!-- the action for dragging the hotspot - call it once in the ondown event -->
+	<action name="draghotspot">
+	<![CDATA[
+		if(%1 != dragging,				
+			spheretoscreen(ath, atv, hotspotcenterx, hotspotcentery);
+			sub(drag_adjustx, mouse.stagex, hotspotcenterx); 
+			sub(drag_adjusty, mouse.stagey, hotspotcentery); 
+			draghotspot(dragging);
+		  ,
+			if(pressed,
+				sub(dx, mouse.stagex, drag_adjustx);
+				sub(dy, mouse.stagey, drag_adjusty);				
+				screentosphere(dx, dy, ath, atv);
+				copy(print_ath, ath);
+				copy(print_atv, atv);
+				roundval(print_ath, 3);
+				roundval(print_atv, 3);
+				txtadd(plugin[hotspotinfo].html, '&lt;hotspot name="',get(name),'"&nbsp;ath="',get(print_ath),'"&nbsp;atv="',get(print_atv),'"&nbsp;/&gt;');
+				delayedcall(0, draghotspot(dragging) );
+			  );
+		  );
+	]]>
+	</action>
+	
+</krpano>

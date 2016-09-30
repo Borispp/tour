@@ -1,0 +1,17 @@
+﻿<krpano>
+
+	<style name="pichotspot" 	distorted="false" capture="true" zorder="1" url="%SWFPATH%/robertitor/btn_image.png" zoom="false" scale="0.5" scale.mobile="1" hide_text="showtext('');" visible="false"
+		onhover="if(hotspots_settings.hotspots_tooltip_enabled,if(hotspot_tooltips_data.hotspot_name[get(name)].tooltip,ifnot(autotour_started,showtext(get(hotspot_tooltips_data.hotspot_name[get(name)].tooltip),robertitior_text_style);)););" 		
+		ondown="onhover();" 
+		onclick="ifnot(autotour_started,magflyouts_image_show(get(name));hide_text(); );" 
+		/>
+	
+	<style name="videohotspot"  distorted="false" capture="true" zorder="1" url="%SWFPATH%/robertitor/btn_video.png" scale="0.5" scale.mobile="1" zoom="false" hide_text="showtext('');" visible="false"	
+		onhover="if(hotspots_settings.hotspots_tooltip_enabled,if(hotspot_tooltips_data.hotspot_name[get(name)].tooltip,ifnot(autotour_started,showtext(get(hotspot_tooltips_data.hotspot_name[get(name)].tooltip),robertitior_text_style);)););" 		
+		ondown="onhover();" 
+		onclick="ifnot(autotour_started,videoplay(get(name));hide_text(); );" 
+		/>
+
+	<textstyle name="robertitior_text_style" font="Arial" fontsize="14.0" bold="true" background="true" backgroundcolor="0x000000" border="false" bordercolor="0xf37921" textcolor="0xf37921" alpha="0.9" origin="cursor" edge="bottom" textalign="none" showtime="0.1" fadetime="0.0" fadeintime="0.0" noclip="true" xoffset="0"  yoffset="-20" padding="5" roundedge="5" />
+	
+</krpano>

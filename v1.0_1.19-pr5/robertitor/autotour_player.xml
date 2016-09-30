@@ -1,0 +1,302 @@
+<krpano>
+
+	<include url="settings.xml" /> 
+	
+	<include url="autotour_definition.xml" /> 
+	<include url="show_image.xml" />
+	<include url="showtext.xml" />
+	<include url="hotspot_tooltip_data.xml" />	
+	<include url="videoplayer.xml" />
+	<include url="styles.xml"/>
+	
+	<action name="autotour_initialize" autorun="preinit">	
+		<!-- reading parameters -->
+		if(user_autotour_enabled EQ true, 
+			set(autotour_settings.autotour_enabled, true);
+			set(autotour_settings.idle_time, 0););
+		
+		autotour_settings.hide_image_action();
+		
+		if(layer[skin_loadingtext],		
+		set(vtourskin_loaded,true);				
+		,		
+		set(vtourskin_loaded,false);		
+		);	
+				
+		delayedcall(1,			
+			if(robertitor_loaded EQ true, set(autotour_settings.autotour_enabled,false); set(layer[editor_zoom_fov_view].visible,true);
+			, 
+			if(autotour_settings.start_autotour_button EQ true AND autotour_definition.step.count GT 0, 			
+			set(layer[autotour_play].visible,true); );
+		 ));	
+	</action>
+		
+	<style name="autotour_hs_style"	keep="true"	distorted="false" border="true" backgroundcolor="0x336699" visible="true" vcenter="true" roundedge="30" url="%SWFPATH%/plugins/textfield.swf" borderwidth="2" backgound="true" bordercolor="0xFFFFFF" align="center" edge="center" padding="5"  
+		onclick_x="set(hotspot[info_box_hotspot_style].visible, false);copy(hotspot[info_box_hotspot_style].html,);" 
+		css="font-family:Helvetica; color:#ffffff; font-size:14px;text-align:center;" width="30" height="30" 
+	/>
+		
+	
+	
+	<events name="autotour_editor" keep="true" 
+		onnewpano="		
+		ifnot(vtourskin_loaded EQ true,editor_skin_showloading(true);	);
+		
+		if(autotour_started EQ true,		
+				if(autotour_settings.hotspots_hiden_on_autotour EQ true,					
+					hide_all_hotspots_when_autotour(false);
+					,					
+					hide_all_hotspots_when_autotour(true);
+				);
+			,
+				show_all_hotspots();
+		);
+		
+		if(autotour_creating_now,
+			ifnot(autotour_creating_now EQ false,display_only_this_scene_autorotate_points(););  
+		);
+		
+		ifnot(autotour_started,hide_show_info(); 
+			delayedcall(1,
+				if(autotour_settings.autotour_enabled EQ true AND autotour_definition.step.count GT 0, 					
+					set(idletime,get(autotour_settings.idle_time));
+					set(events.onidle, 
+					ifnot(autotour_creating_now,					
+						ifnot(playing_video_now,
+							ifnot(autotour_started,start_autotour(real_autotour));
+								);
+							);
+					
+						);
+					);
+				);
+			);"
+		
+		onloadcomplete="ifnot(vtourskin_loaded EQ true,editor_skin_showloading(false);	);"
+		onremovepano="ifnot(vtourskin_loaded EQ true,editor_skin_showloading(true);	);"
+		onmousedown="if(autotour_started EQ true,stopautotour(););"		
+		ondown="if(autotour_started EQ true,stopautotour(););"
+	/>
+	
+	<action name="start_autotour">				
+		<!-- When autotour started make arrow hotspots style unvisible in case settings are set not to display any hotstpos during autotour -->
+		set(style[get(robertitor_settings.scene_hotspot_style)].visible,false);
+				
+		set(layer[editor_zoom_fov_view].visible,false);
+		ifnot(robertitor_loaded,if(autotour_settings.start_autotour_button, set(layer[autotour_play].visible,false); ); );
+		
+		<!-- Should gui be hiden when autotour starts -->
+		ifnot(robertitor_loaded,if(autotour_settings.gui_hiden_on_autotour, hide_gui(); ); );
+				
+		<!-- Hide all hotspots is settings hotspots_hiden_on_autotour="false" -->
+		if(autotour_settings.hotspots_hiden_on_autotour EQ true,
+		hide_all_hotspots_when_autotour(false);
+		);
+		
+		delayedcall(0.5,set(autotour_started,true);
+										set(autotour_step,0);
+										set(counter_running,false);
+										if('%1' == 'real_autotour',if(autotour_settings.display_autotour_msg EQ true,show_show_info(get(autotour_settings.autotour_started_text)););	delayedcall(0.5,autotour(real_autotour);		); );
+										if('%1' == 'preview_autotour',	if(autotour_settings.display_autotour_msg EQ true,show_show_info(get(autotour_settings.autotour_started_text)););	delayedcall(0.5,autotour(preview_autotour);); );
+		);
+	</action>
+	
+	<action name="stopautotour">
+		set(counter_running,false);
+		set(layer[skin_tour_on].visible,true);set(layer[skin_tour_off].visible,false);		
+		hide_show_info();
+		
+		<!--Check state of the GUI before autotour started and gui hidden in case settings are set to:  autotour_settings.gui_hiden_on_autotour ="true" -->
+		<!--if(autotour_settings.gui_hiden_on_autotour, show_gui(); );-->
+		show_gui();
+	
+		autotour_settings.hide_image_action();
+		set(autotour_started,false);
+		
+		ifnot(robertitor_loaded,if(autotour_settings.start_autotour_button, set(layer[autotour_play].visible,true); );	);
+		
+		if(robertitor_loaded, set(layer[editor_zoom_fov_view].visible,true); );
+		
+		hide_all_hotspots_when_autotour(true);
+	</action>
+	
+	
+	<action name="autotour">		
+		<!-- Hide all potential tooltips before next action take place -->
+		<!--hide_all_tooltip_texts();-->		
+		oninterrupt(stopautotour);
+		if('%1' == 'real_autotour', 		set(autotour_type,real_autotour);			copy(number_of_autotour_actions,autotour_definition.step.count));
+		if('%1' == 'preview_autotour', 	set(autotour_type,preview_autotour);	copy(number_of_autotour_actions,autotour_preview.step.count));
+										
+		if(autotour_started,
+			ifnot(autotour_step,set(autotour_step,0));
+						
+			ifnot(counter_running,
+				if(autotour_settings.loop_at_end EQ true, inc(autotour_step,1,get(number_of_autotour_actions),1);,inc(autotour_step,1,get(number_of_autotour_actions)););						
+				if(autotour_step LE number_of_autotour_actions,						
+						txtadd(activate_action_nr,'action_',get(autotour_step));												
+						
+						if(autotour_type EQ 'real_autotour',		
+						autotour_definition.step[get(activate_action_nr)].action();	
+						delayedcall(0.1,autotour(real_autotour));						
+						);
+						
+						
+						<!--if(autotour_type EQ 'preview_autotour',trace(get(activate_action_nr),' : ',get(autotour_preview.step[get(activate_action_nr)].action));autotour_preview.step[get(activate_action_nr)].action();		delayedcall(0.1,autotour(preview_autotour)););						-->
+						if(autotour_type EQ 'preview_autotour',						
+						autotour_preview.step[get(activate_action_nr)].action();		
+						delayedcall(0.1,autotour(preview_autotour)););						
+				,
+				set(autotour_started,false);
+				stopautotour();
+				);
+			
+			);
+			,
+			stopautotour();
+		);</action>
+
+	<action name="pause_action">				
+		set(time2pause,%1);
+		set(counter_running,true);
+		copy(lasttick, timertick);		
+		asyncloop(counter_running,
+			copy(tick, timertick);
+			sub(tt, tick, lasttick);			
+			if(tt GT time2pause,				
+				set(counter_running,false);						
+				autotour();
+			);
+		);	
+	</action>
+
+	<action name="load_new_scene">
+		loadscene(%1, null, MERGE, BLEND(2));lookat(%2, %3, %4);wait(0.1);wait(BLEND);		
+		ifnot(vtourskin_loaded EQ true,		 editor_skin_showloading(false); );
+	</action>
+		
+	<action name="show_show_info">							
+		set(layer[show_info].html,%1);	
+		delayedcall(0.2,set(layer[show_info].visible,true); );			
+	</action>	
+	
+	<layer name="autotour_background" type="container" keep="true" bgalpha="0.0" bgcolor="0xff0000" width="100%" height="100%" y="0" x="0" align="topleft" bgcapture="false" handcursor="false" visible="true" zorder="98">			
+		<layer name="autotour_play"	keep="true" url="%SWFPATH%/plugins/textfield.swf" children="false" align="topright" vcenter="true" hcenter="true" visible="false" handcursor="true" roundedge="5"  zorder="99" 
+			onloaded="set(css,text-align:center; color:#f37921; font-family:Arial; font-weight:bold; font-size:14px;);" bordercolor="0xFFFFFF" borderwidth="1" borderalpha="1" border="false" background="true" backgroundcolor="0x000000" backgroundalpha="0.5" 
+			html="PLAY" css="font-family:Courier;" x="10" y="10" padding="10 15 10 15"  
+			onclick_1="set(layer[autotour_stop].visible,true);set(layer[autotour_play].visible,false);start_autotour(real_autotour);"
+			onclick="set(layer[autotour_play].visible,false);start_autotour(real_autotour);"
+		/>
+	</layer>	
+	
+	<action name="hide_show_info">			
+		set(layer[show_info].html,);	
+		set(layer[show_info].visible,false);
+	</action>		
+	
+	<layer name="show_info"	keep="true"
+		url="%SWFPATH%/plugins/textfield.swf" children="false" align="top" vcenter="true" hcenter="true" visible="false" handcursor="false" roundedge="5" 
+		onloaded="set(css,text-align:center; color:#f37921; font-family:Arial; font-weight:bold; font-size:14px;);" bordercolor="0xFFFFFF" borderwidth="1" borderalpha="1" border="false" background="true" backgroundcolor="0x000000" backgroundalpha="0.5" 
+		html="info box..." css="font-family:Courier;" x="" y="10" padding="10 15 10 15"
+	/>	
+
+	<layer name="editor_zoom_fov_view" type="container" keep="true" bgalpha="0.0" bgcolor="0xff0000" width="100%" height="100%" y="0" x="0" align="topleft" bgcapture="false" handcursor="false" visible="false" zorder="98">			
+		<layer name="fov_preview"	keep="true"
+			url="%SWFPATH%/plugins/textfield.swf" children="false" align="topright" vcenter="true" hcenter="true" visible="true" handcursor="false" roundedge="5" width="100" 
+			onloaded="set(css,text-align:center; color:#f37921; font-family:Arial; font-weight:bold; font-size:14px;);" bordercolor="0xFFFFFF" borderwidth="1" borderalpha="1" border="false" background="true" backgroundcolor="0x000000" backgroundalpha="0.5" 
+			html="fov:" css="font-family:Courier;" x="10" y="50" padding="10 15 10 10"
+			
+		/>		
+		
+		<layer name="btn_zoom_in"	keep="true"
+			url="%SWFPATH%/plugins/textfield.swf" children="false" align="right" vcenter="true" hcenter="true" visible="true" handcursor="false" roundedge="25"  width="50" height="50"
+			onloaded="set(css,text-align:center; color:#f37921; font-family:Arial; font-weight:bold; font-size:36px;);" bordercolor="0xFFFFFF" borderwidth="1" borderalpha="1" border="false" background="true" backgroundcolor="0x000000" backgroundalpha="0.5" 
+			html="+" css="font-family:Courier;" x="10" y="-50" padding="1"
+			ondown="set(fov_moveforce,-0.2);"     onup="set(fov_moveforce,0);" />
+		/>
+		
+		<layer name="btn_zoom_out"	keep="true"
+			url="%SWFPATH%/plugins/textfield.swf" children="false" align="right" vcenter="false" hcenter="true" visible="true" handcursor="false" roundedge="25" width="50" height="50"
+			onloaded="set(css,text-align:center; color:#f37921; font-family:Arial; font-weight:bold; font-size:36px;);" bordercolor="0xFFFFFF" borderwidth="1" borderalpha="1" border="false" background="true" backgroundcolor="0x000000" backgroundalpha="0.5" 
+			html="-" css="font-family:Courier;" x="10" y="50" padding="1"
+			ondown="set(fov_moveforce,+0.2);"     onup="set(fov_moveforce,0);" />
+		/>
+	</layer>	
+	
+	<events name="editor_zoom_fov" keep="true" 
+		onviewchanged="copy(diplay_fov,view.fov);roundval(diplay_fov,2);txtadd(diplay_fov,'FOV:',get(diplay_fov));copy(layer[fov_preview].html,diplay_fov);"
+		
+	/>
+	
+	<action name="hide_all_hotspots_when_autotour">				  	  		  	
+			delayedcall(0,																
+		  	for(set(i,0), i LT hotspot.count, inc(i),	  					
+
+									<!-- OR hotspot[get(i)].style EQ 'skin_tooltips' added as fix of krpano1.19 new style handling -->
+									if(hotspot[get(i)].style EQ robertitor_settings.image_hotspot_style OR hotspot[get(i)].style EQ robertitor_settings.scene_hotspot_style OR hotspot[get(i)].style EQ robertitor_settings.video_hotspot_style OR hotspot[get(i)].style EQ 'skin_tooltips',
+										set(hotspot[get(i)].visible,%1); 
+										);									
+						);					
+			);
+	</action>
+	
+	<action name="show_all_hotspots">
+			<!--show all videohotspot, pichotspot and skin_hotspotstyle-->
+			
+			delayedcall(0,				
+		  	for(set(i,0), i LT hotspot.count, inc(i),	  							  				
+									if(hotspot[get(i)].style EQ robertitor_settings.image_hotspot_style OR hotspot[get(i)].style EQ robertitor_settings.scene_hotspot_style OR hotspot[get(i)].style EQ robertitor_settings.video_hotspot_style OR hotspot[get(i)].style EQ 'skin_tooltips',
+										set(hotspot[get(i)].visible,true); 									
+									);									
+						);					
+			);
+	</action>
+			
+	<action name="hide_gui">				
+	copy(layer[skin_btn_show].alpha_before,layer[skin_btn_show].alpha); 
+	
+	if(layer[skin_btn_show].visible EQ false,	
+		set(gui_visible_efore_autotour_started,true);
+		,
+		set(gui_visible_efore_autotour_started,false);	
+	);
+		if(layer[skin_btn_prev_fs],  		
+		tween(layer[skin_btn_prev_fs].alpha,0); set(layer[skin_btn_prev_fs].enabled,false);
+		);
+		
+		if(layer[skin_btn_next_fs], tween(layer[skin_btn_next_fs].alpha,0); set(layer[skin_btn_next_fs].enabled,false); );
+	
+	if(vtourskin_loaded EQ true, skin_hideskin(); );
+	
+	delayedcall(1, 		
+		if(autotour_started EQ true, tween(layer[skin_btn_show].alpha,0); set(layer[skin_btn_show].enabled,false); );
+	);
+	
+	</action>
+	
+		<action name="show_gui">				
+	
+	if(layer[skin_btn_prev_fs], set(layer[skin_btn_prev_fs].alpha,0.25); set(layer[skin_btn_prev_fs].enabled,true); );
+	if(layer[skin_btn_next_fs], set(layer[skin_btn_next_fs].alpha,0.25); set(layer[skin_btn_next_fs].enabled,true); );
+	
+	set(layer[skin_btn_show].alpha,get(layer[skin_btn_show].alpha_before)); set(layer[skin_btn_show].enabled,true);	
+	
+	if(gui_visible_efore_autotour_started EQ true,		
+		if(vtourskin_loaded EQ true, skin_showskin(); );			
+		);
+	
+	</action>
+		
+	
+	<!-- Part of the code needed in case vtourskinn is not loaded -->
+	<action name="editor_skin_showloading">		
+		set(layer[editor_skin_loadingtext].visible, %1);
+	</action>	
+	
+	<layer name="editor_skin_loadingtext"  keep="true" url="%SWFPATH%/plugins/textfield.swf" align="center" x="5" y="-5" html="loading..." visible="false" autoheight="true" background="false" border="false" enabled="false" css="text-align:center; color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:22px; font-style:italic;" textshadow="2" />
+	
+	<krpano devices="mobile">		
+		<layer name="editor_skin_loadingtext" css="text-align:center; color:#FFFFFF; font-family:Arial; font-weight:bold; font-style:italic; font-size:44px;" />		
+	</krpano>
+	
+</krpano>
